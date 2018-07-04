@@ -1,3 +1,5 @@
+import * as math from 'mathjs';
+
 /**
  *
  *
@@ -6,6 +8,11 @@
  */
 export class Signal {
   private _signal: number[];
+  private _fft: {
+    freq: number[];
+    twoSidedSpec: number[];
+    singleSidedSpec: number[];
+  };
 
   /**
    *Creates an instance of Signal.
@@ -14,10 +21,12 @@ export class Signal {
    */
   constructor(samples: number) {
     // Generates a 0-filled array of length 'samples'
-    this._signal = new Array(samples + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
+    this._signal = new Array(samples);
+    this._fft = {
+      freq: new Array(samples),
+      twoSidedSpec: new Array(samples),
+      singleSidedSpec: new Array(samples),
+    };
   }
 
   /**
@@ -121,5 +130,11 @@ export class Signal {
     }
 
     return thresholds;
+  }
+
+  public doFFT(sampFreq: number) {
+    const comp = this._signal.map((x) => math.complex(x, 0));
+
+    // TODO: FFT computations...
   }
 }
