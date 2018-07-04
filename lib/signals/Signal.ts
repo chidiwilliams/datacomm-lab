@@ -1,7 +1,17 @@
+/**
+ *
+ *
+ * @export
+ * @class Signal
+ */
 export class Signal {
   private _signal: number[];
-  private _name: string = 'Signal';
 
+  /**
+   *Creates an instance of Signal.
+   * @param {number} samples
+   * @memberof Signal
+   */
   constructor(samples: number) {
     // Generates a 0-filled array of length 'samples'
     this._signal = new Array(samples + 1)
@@ -10,10 +20,21 @@ export class Signal {
       .map(parseFloat);
   }
 
+  /**
+   * Get the signal array
+   *
+   * @type {number[]}
+   * @memberof Signal
+   */
   public get signal(): number[] {
     return this._signal;
   }
 
+  /**
+   * Set the signal array
+   *
+   * @memberof Signal
+   */
   public set signal(signal: number[]) {
     if (signal.length !== this._signal.length) {
       throw new Error('Invalid signal length');
@@ -22,41 +43,57 @@ export class Signal {
     this._signal = signal;
   }
 
+  /**
+   * Get the value of the signal at a sample value
+   *
+   * @param {number} index
+   * @returns
+   * @memberof Signal
+   */
   public getSignalValue(index: number) {
     return this._signal[index];
   }
 
+  /**
+   * Set the value of the signal at a sample value
+   *
+   * @param {number} index
+   * @param {number} value
+   * @memberof Signal
+   */
   public setSignalValue(index: number, value: number) {
     this._signal[index] = value;
   }
 
-  public get name(): string {
-    return this._name;
-  }
-
-  public set name(name: string) {
-    this._name = name;
-  }
-
-  public getLength() {
-    return this._signal.length;
-  }
-
-  public print(header: string, printMode: number): void {
+  /**
+   * Prints the signal array to console.
+   * Setting `numbering` to true prepends 1., 2., 3., etc.
+   * to the array values.
+   *
+   * @param {string} header
+   * @param {boolean} [numbering]
+   * @memberof Signal
+   */
+  public print(header: string, numbering?: boolean): void {
     console.log(header);
     for (let i = 0; i < this.signal.length; i++) {
       const value = this.signal[i];
 
-      if (printMode === 0) {
-        console.log(value + ' ');
-      } else if (printMode === 1) {
-        console.log(value);
-      } else {
+      if (numbering === true) {
         console.log(`${i}. ` + value);
+      } else {
+        console.log(value);
       }
     }
   }
 
+  /**
+   * Returns the threshold values per numThresh divisions of the array
+   *
+   * @param {number} numThresh
+   * @returns {number[]}
+   * @memberof Signal
+   */
   public getThresholds(numThresh: number): number[] {
     if (numThresh > this.signal.length) {
       throw new Error(
