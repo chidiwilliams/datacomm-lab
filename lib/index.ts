@@ -9,6 +9,11 @@ export { BPSK } from './modulations/BPSK';
 // Noise Schemes
 export { AWGN } from './impairments/AWGN';
 
+// Codecs
+export { Hamming4 } from './codecs/Hamming4';
+
+// Filters
+export { Filter, FilterType } from './util/Filter';
+
 // Utilities
-export { ArrayFunctions } from './util/ArrayFunctions'
-export { FFT } from './util/FFT'
+export { FFT } from './util/FFT';
