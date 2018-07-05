@@ -8,3 +8,7 @@ export { BPSK } from './modulations/BPSK';
 
 // Noise Schemes
 export { AWGN } from './impairments/AWGN';
+
+// Utilities
+export { ArrayFunctions } from './util/ArrayFunctions'
+export { FFT } from './util/FFT'

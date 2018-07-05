@@ -1,6 +1,6 @@
 import * as math from 'mathjs';
 
-export default class FFT {
+export class FFT {
   public fft(x: math.Complex[]): math.Complex[] {
     // Base case
     if (x.length === 1) {

@@ -4,7 +4,7 @@
  * @export
  * @class ArrayFunctions
  */
-export default class ArrayFunctions {
+export class ArrayFunctions {
   /**
    * Returns an array containing the addition of each respecitve element of the
    * input arrays.
