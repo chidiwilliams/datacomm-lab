@@ -5,25 +5,23 @@
  * @class AWGN
  */
 export class AWGN {
-  private _amp: number = 1;
-  private _noise: number[];
-
   /**
-   * Creates an instance of AWGN.
+   * Get the noise array
+   *
    * @param {number} numSamples
-   * @param {number} [amplitude]
+   * @param {number} [amp]
+   * @returns {number[]}
    * @memberof AWGN
    */
-  constructor(numSamples: number, amplitude?: number) {
-    if (!amplitude) {
-      amplitude = 1;
+  public generate(numSamples: number, amp?: number): number[] {
+    amp = amp || 1;
+
+    const n = new Array(numSamples);
+    for (let i = 0; i < n.length; i++) {
+      n[i] = this.next() * amp;
     }
 
-    this._noise = new Array(numSamples);
-
-    for (let i = 0; i < this._noise.length; i++) {
-      this._noise[i] = this.nextGaussian() * amplitude;
-    }
+    return n;
   }
 
   /**
@@ -32,33 +30,11 @@ export class AWGN {
    * @returns {number}
    * @memberof AWGN
    */
-  public nextGaussian(): number {
+  private next(): number {
     let u = 0;
     let v = 0;
     while (u === 0) u = Math.random();
     while (v === 0) v = Math.random();
     return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
-  }
-
-  /**
-   * Get the noise amplitude
-   *
-   * @readonly
-   * @type {number}
-   * @memberof AWGN
-   */
-  public get amplitude(): number {
-    return this._amp;
-  }
-
-  /**
-   * Get the noise array
-   *
-   * @readonly
-   * @type {number[]}
-   * @memberof AWGN
-   */
-  public get noise(): number[] {
-    return this._noise;
   }
 }

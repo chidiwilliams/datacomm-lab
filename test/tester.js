@@ -1,4 +1,4 @@
-const { Hamming4 } = require('../dist');
+const { AWGN } = require('../dist');
 
-const cor = new Hamming4().encode([1, 0, 0, 0]);
-console.log(cor);
+// const cor = new AWGN().([1, 0, 0, 0]);
+// console.log(cor);
