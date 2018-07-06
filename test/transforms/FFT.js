@@ -1,10 +1,10 @@
 'use strict';
 const expect = require('chai').expect;
 const math = require('mathjs');
-const { FFT } = require('../../dist');
+const lab = require('../../dist');
 
 const fft = () => {
-  const t = new FFT().fft([
+  const t = new lab.FFT().fft([
     math.complex(2, 0),
     math.complex(4, 0),
     math.complex(8, 0),
@@ -20,7 +20,7 @@ const fft = () => {
 };
 
 const ifft = () => {
-  const t = new FFT().ifft([
+  const t = new lab.FFT().ifft([
     math.complex(8, 0),
     math.complex(0),
     math.complex(0),
@@ -36,7 +36,7 @@ const ifft = () => {
 };
 
 const cconvolve = () => {
-  const c = new FFT().cconvolve([2, 2, 2, 2], [2, 2, 2, 2]);
+  const c = new lab.FFT().cconvolve([2, 2, 2, 2], [2, 2, 2, 2]);
 
   expect(c).to.eql([
     math.complex(16, 0),
@@ -47,7 +47,7 @@ const cconvolve = () => {
 };
 
 const convolve = () => {
-  const t = new FFT().convolve([1, 0], [0, 1]);
+  const t = new lab.FFT().convolve([1, 0], [0, 1]);
 
   expect(t).to.eql([
     math.complex(0, 0),

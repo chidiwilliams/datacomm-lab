@@ -1,10 +1,7 @@
 'use strict';
-const expect = require('chai').expect;
-const math = require('mathjs');
 const FFT = require('./transforms/FFT');
 const Hamming4 = require('./codecs/Hamming4');
-const { Signal } = require('../dist/signals/Signal');
-const { ComplexSignal } = require('../dist/signals/ComplexSignal');
+const AWGN = require('./impairments/AWGN');
 
 // Signals
 
@@ -12,13 +9,19 @@ const { ComplexSignal } = require('../dist/signals/ComplexSignal');
 
 // Codecs
 // Hamming codec
-describe('Hamming codec functions', () => {
-  it('should perform Hamming-7,4 encoding', () => Hamming4.encode());
-  it('should perform Hamming-7,4 encoding and add parity bit', () =>
+describe('Hamming-7,4 codec functions', () => {
+  it('should encode', () => Hamming4.encode());
+  it('should encode and add parity bit', () =>
     Hamming4.encodeP());
-  it('should perform Hamming-7,4 decoding', () => Hamming4.decode());
-  it('should perform Hamming-7,4 single-bit error correction', () =>
+  it('should decode', () => Hamming4.decode());
+  it('should correct single-bit error', () =>
     Hamming4.correct());
+});
+
+// Impairments
+// AWGN
+describe('AWGN functions', () => {
+  it('should generate sample with mean between -0.05 and +0.05', () => AWGN.generate());
 });
 
 // FFT
