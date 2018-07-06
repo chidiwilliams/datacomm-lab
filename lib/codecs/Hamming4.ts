@@ -33,8 +33,8 @@ export class Hamming4 {
     }
 
     // Do Hamming
-    const out: number[] = new Array(7);
-    for (let i = 0; i < out.length; i++) {
+    const out: number[] = [0, 0, 0, 0, 0, 0, 0];
+    for (let i = 0; i < 7; i++) {
       for (let j = 0; j < 4; j++) {
         out[i] += Hamming4.GEN_MATRIX[i][j] * m[j];
       }
@@ -60,7 +60,7 @@ export class Hamming4 {
     const cor: number[] = this.correct(rec);
 
     // Decode the bits to reclaim the original four-bit array
-    let dec: number[] = new Array(4);
+    const dec: number[] = [0, 0, 0, 0];
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 7; j++) {
         dec[i] += Hamming4.DECODE_MATRIX[i][j] * cor[j];
@@ -84,7 +84,8 @@ export class Hamming4 {
     return rec;
   }
 
-  public getErrorBit(rec: number[]): number {
+  private getErrorBit(rec: number[]): number {
+    // Get the syndrome matrix
     const syn = this.getSyndrome(rec);
 
     let err = -1;
@@ -95,12 +96,12 @@ export class Hamming4 {
     return err;
   }
 
-  public getSyndrome(rec: number[]): number[] {
+  private getSyndrome(rec: number[]): number[] {
     if (rec.length !== 7) {
       throw new Error('Array length must be 7.');
     }
 
-    const syn: number[] = new Array(3);
+    const syn: number[] = [0, 0, 0];
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 7; j++) {

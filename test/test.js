@@ -1,26 +1,27 @@
 'use strict';
 const expect = require('chai').expect;
 const math = require('mathjs');
-const { FFT } = require('../dist/index');
-const __FFT = require('./util/FFT');
+const FFT = require('./util/FFT');
+const Hamming4 = require('./codecs/Hamming4');
 const { Signal } = require('../dist/signals/Signal');
 const { ComplexSignal } = require('../dist/signals/ComplexSignal');
 
-describe('should create Signal', () => {
-  it('should create signal', () => {
-    const signal = new ComplexSignal(2048);
-    expect(signal.signal).to.be.an('array');
-  });
-});
+// Signals
 
 // Utilities
 
-// Array Functions
+// Codecs
+describe('Hamming codec functions', () => {
+  it('should perform Hamming-7,4 encoding', () => Hamming4.encode());
+  it('should perform Hamming-7,4 encoding and add parity bit', () => Hamming4.encodeP());
+  it('should perform Hamming-7,4 decoding', () => Hamming4.decode());
+  it('should perform Hamming-7,4 single-bit error correction', () => Hamming4.correct());
+});
 
 // FFT
 describe('FFT functions', () => {
-  it('should perform FFT', () => __FFT.fft());
-  it('should perform IFFT', () => __FFT.ifft());
-  it('should perform Circular Convolution', () => __FFT.cconvolve());
-  it('should perform Convolution', () => __FFT.convolve());
+  it('should perform FFT', () => FFT.fft());
+  it('should perform IFFT', () => FFT.ifft());
+  it('should perform Circular Convolution', () => FFT.cconvolve());
+  it('should perform Convolution', () => FFT.convolve());
 });
