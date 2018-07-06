@@ -11,6 +11,7 @@ const { ComplexSignal } = require('../dist/signals/ComplexSignal');
 // Utilities
 
 // Codecs
+// Hamming codec
 describe('Hamming codec functions', () => {
   it('should perform Hamming-7,4 encoding', () => Hamming4.encode());
   it('should perform Hamming-7,4 encoding and add parity bit', () => Hamming4.encodeP());
