@@ -1,13 +1,26 @@
 import * as math from 'mathjs';
 
+/**
+ *
+ *
+ * @export
+ * @class FFT
+ */
 export class FFT {
+  /**
+   * Computes the Fast Fourier Transform of a signal
+   * using Radix-2 Cooley-Tukey algorithm
+   *
+   * @param {math.Complex[]} x Signal in time-domain
+   * @returns {math.Complex[]} Signal in frequency-domain
+   * @memberof FFT
+   */
   public fft(x: math.Complex[]): math.Complex[] {
     // Base case
     if (x.length === 1) {
       return [x[0]];
     }
 
-    // Radix 2 Cooley-Turkey FFT
     if (x.length % 2 !== 0) {
       throw new Error(
         `Length of array 'x' must be a power of 2. ${x.length} given`
@@ -44,6 +57,13 @@ export class FFT {
     return y;
   }
 
+  /**
+   * Computes the Inverse Fast Fourier Transform of a signal
+   *
+   * @param {math.Complex[]} x Signal in frequency-domain
+   * @returns {math.Complex[]} Signal in time-domain
+   * @memberof FFT
+   */
   public ifft(x: math.Complex[]): math.Complex[] {
     // Take conjugate
     let y: math.Complex[] = x.map((i) => math.complex(math.conj(i).toString()));
@@ -60,6 +80,16 @@ export class FFT {
     return y;
   }
 
+  /**
+   * Returns the circular, or cyclic, convolution of two signals,
+   * representing the IFFT of the point-wise product of the FFTs of the
+   * individual signals.
+   *
+   * @param {math.Complex[]} x Signal 1
+   * @param {math.Complex[]} y Signal 2
+   * @returns {math.Complex[]} Circular convolution result
+   * @memberof FFT
+   */
   public cconvolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
     if (x.length !== y.length) {
       throw new Error('Arrays must have equal length.');
@@ -83,6 +113,14 @@ export class FFT {
     return this.ifft(c);
   }
 
+  /**
+   * Returns the convolution of two signals
+   *
+   * @param {math.Complex[]} x Signal 1
+   * @param {math.Complex[]} y Signal 2
+   * @returns {math.Complex[]} Convolution result
+   * @memberof FFT
+   */
   public convolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
     const ZERO: math.Complex = math.complex(0, 0);
 
