@@ -9,7 +9,6 @@ import { FFT } from '../transforms/FFT';
  */
 export class Signal {
   private _signal: number[];
-  private _fRes: number[];
 
   /**
    * Creates an instance of Signal.
@@ -17,7 +16,7 @@ export class Signal {
    * @memberof Signal
    */
   constructor(Fs: number) {
-    this._signal = this._fRes = new Array(Fs + 1)
+    this._signal = new Array(Fs + 1)
       .join('0')
       .split('')
       .map(parseFloat);
@@ -129,11 +128,10 @@ export class Signal {
   /**
    * Returns the frequency magnitude response of the signal
    *
-   * @param {number} Fs Sampling frequency
    * @returns Frequency magnitude response array
    * @memberof Signal
    */
-  public getFrequencyResponse(Fs: number) {
+  public getFrequencyResponse() {
     if (isNaN(this._signal[0])) {
       throw new Error('Please add a signal array first');
     }
@@ -152,15 +150,9 @@ export class Signal {
     }
 
     // Compute single-sided spectrum
-    const sinSSpectrum: number[] = twoSSpectrum.slice(
-      0,
-      twoSSpectrum.length / 2 + 1
-    );
-
-    for (let i = 1; i < sinSSpectrum.length - 1; i++) {
-      sinSSpectrum[i] *= 2;
-    }
-    this._fRes = sinSSpectrum;
+    const sinSSpectrum: number[] = twoSSpectrum
+      .slice(0, twoSSpectrum.length / 2 + 1)
+      .map((x, i, arr) => (i === 0 || i === arr.length - 1 ? x : x * 2));
 
     return sinSSpectrum;
   }
