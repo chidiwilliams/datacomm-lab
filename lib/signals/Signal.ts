@@ -90,6 +90,31 @@ export class Signal {
   }
 
   /**
+   * Samples the signal at the given frequency. For accuracy,
+   * the sampling frequency must be a factor of the original
+   * signal sampling frequency.
+   *
+   * @param {number} Fs Sampling frequency
+   * @returns {number[]} Sampled signal array
+   * @memberof Signal
+   */
+  public sample(Fs: number): number[] {
+    if (Fs % this._signal.length !== 0) {
+      throw new Error(
+        'New sampling frequency must be a multiple of the previous sampling frequency'
+      );
+    }
+
+    const r: number[] = new Array(Fs);
+    const fact: number = Fs / this._signal.length;
+    for (let i = 0; i < r.length; i++) {
+      r[i] = this._signal[Math.floor(i / fact)];
+    }
+
+    return r;
+  }
+
+  /**
    * Returns the threshold values per numThresh divisions of the array
    *
    * @param {number} numThresh
