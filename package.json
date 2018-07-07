@@ -8,6 +8,9 @@
     "build": "tsc",
     "test": "mocha --reporter spec"
   },
+  "pre-commit": [
+    "test"
+  ],
   "keywords": [],
   "author": "Chidi Williams <williamschidi1@gmail.com> (https://www.github.com/chidiwilliams)",
   "license": "ISC",
@@ -18,7 +21,6 @@
     "typescript": "^2.9.2"
   },
   "dependencies": {
-    "complex.js": "^2.0.10",
     "mathjs": "^5.0.1"
   }
 }

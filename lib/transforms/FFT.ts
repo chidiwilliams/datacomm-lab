@@ -9,7 +9,9 @@ export class FFT {
 
     // Radix 2 Cooley-Turkey FFT
     if (x.length % 2 !== 0) {
-      throw new Error('Length of array `x` must be a power of 2.');
+      throw new Error(
+        `Length of array 'x' must be a power of 2. ${x.length} given`
+      );
     }
 
     // FFT of even terms

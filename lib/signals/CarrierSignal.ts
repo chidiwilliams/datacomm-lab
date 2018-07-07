@@ -11,19 +11,24 @@ export class CarrierSignal extends Signal {
   private _freq: number;
 
   /**
-   *Creates an instance of CarrierSignal.
-   * @param {number} samples
-   * @param {number} frequency
+   * Creates an instance of CarrierSignal.
+   * @param {number} Fs Sampling frequency
+   * @param {number} Fa Signal frequency
    * @memberof CarrierSignal
    */
-  constructor(samples: number, frequency: number) {
-    super(samples);
+  constructor(Fs: number, Fa: number) {
+    if (Fa >= Fs / 2) {
+      throw new Error(
+        'Carrier frequency must be less than half the sampling frequency (Fa < Fs / 2)'
+      );
+    }
+    super(Fs);
 
-    // Generate carrier with 2*PI*frequency*ithsample
-    this._freq = frequency;
-    const carrier: number[] = new Array(this.signal.length);
-    for (let i = 0; i < carrier.length; i++) {
-      carrier[i] = Math.sin((2 * Math.PI * frequency * i) / this.signal.length);
+    // Generate carrier with 2 * PI * frequency * ith-sample
+    this._freq = Fa;
+    const carrier: number[] = new Array(Fs);
+    for (let i = 0; i < Fs; i++) {
+      carrier[i] = Math.sin((2 * Math.PI * Fa * i) / Fs);
     }
 
     this.signal = carrier;

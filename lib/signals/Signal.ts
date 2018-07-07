@@ -1,4 +1,5 @@
 import * as math from 'mathjs';
+import { FFT } from '../transforms/FFT';
 
 /**
  *
@@ -8,25 +9,18 @@ import * as math from 'mathjs';
  */
 export class Signal {
   private _signal: number[];
-  private _fft: {
-    freq: number[];
-    twoSidedSpec: number[];
-    singleSidedSpec: number[];
-  };
+  private _fRes: number[];
 
   /**
-   *Creates an instance of Signal.
-   * @param {number} samples
+   * Creates an instance of Signal.
+   * @param {number} Fs Sampling frequency
    * @memberof Signal
    */
-  constructor(samples: number) {
-    // Generates a 0-filled array of length 'samples'
-    this._signal = new Array(samples);
-    this._fft = {
-      freq: new Array(samples),
-      twoSidedSpec: new Array(samples),
-      singleSidedSpec: new Array(samples),
-    };
+  constructor(Fs: number) {
+    this._signal = this._fRes = new Array(Fs + 1)
+      .join('0')
+      .split('')
+      .map(parseFloat);
   }
 
   /**
@@ -132,9 +126,42 @@ export class Signal {
     return thresholds;
   }
 
-  public doFFT(sampFreq: number) {
-    const comp = this._signal.map((x) => math.complex(x, 0));
+  /**
+   * Returns the frequency magnitude response of the signal
+   *
+   * @param {number} Fs Sampling frequency
+   * @returns Frequency magnitude response array
+   * @memberof Signal
+   */
+  public getFrequencyResponse(Fs: number) {
+    if (isNaN(this._signal[0])) {
+      throw new Error('Please add a signal array first');
+    }
 
-    // TODO: FFT computations...
+    // Convert signal to complex array
+    const comp: math.Complex[] = this._signal.map((x) => math.complex(x, 0));
+
+    // Compute FFT
+    const sigFFT: math.Complex[] = new FFT().fft(comp);
+
+    // Compute two-sided spectrum
+    const twoSSpectrum: number[] = new Array(this.signal.length);
+    for (let i = 0; i < twoSSpectrum.length; i++) {
+      twoSSpectrum[i] =
+        math.complex(sigFFT[i]).toPolar().r / twoSSpectrum.length;
+    }
+
+    // Compute single-sided spectrum
+    const sinSSpectrum: number[] = twoSSpectrum.slice(
+      0,
+      twoSSpectrum.length / 2 + 1
+    );
+
+    for (let i = 1; i < sinSSpectrum.length - 1; i++) {
+      sinSSpectrum[i] *= 2;
+    }
+    this._fRes = sinSSpectrum;
+
+    return sinSSpectrum;
   }
 }
