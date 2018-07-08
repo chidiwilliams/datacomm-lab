@@ -5,7 +5,7 @@ var Hamming4 = /** @class */ (function () {
     }
     Hamming4.prototype.encode = function (m, par) {
         if (m.length !== 4) {
-            throw new Error('Array length must be 4.');
+            throw new Error('Input array must have a length of 4.');
         }
         // Ensure array contains only binary values
         for (var i = 0; i < m.length; i++) {
@@ -31,7 +31,7 @@ var Hamming4 = /** @class */ (function () {
     };
     Hamming4.prototype.decode = function (rec) {
         if (rec.length !== 7) {
-            throw new Error('Array length must be 7.');
+            throw new Error('Input array must have a length of 7.');
         }
         // Correct received matrix
         var cor = this.correct(rec);
@@ -46,7 +46,7 @@ var Hamming4 = /** @class */ (function () {
     };
     Hamming4.prototype.correct = function (rec) {
         if (rec.length !== 7) {
-            throw new Error('Array length must be 7.');
+            throw new Error('Input array must have a length of 7.');
         }
         // Get bit position at which error occured
         var errBit = this.getErrorBit(rec);

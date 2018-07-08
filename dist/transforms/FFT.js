@@ -31,7 +31,7 @@ var FFT = /** @class */ (function () {
             return [x[0]];
         }
         if (x.length % 2 !== 0) {
-            throw new Error("Length of array 'x' must be a power of 2. " + x.length + " given");
+            throw new Error("Length of input array must be a power of 2.");
         }
         // FFT of even terms
         var even = new Array(x.length / 2);

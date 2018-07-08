@@ -22,7 +22,7 @@ export class Hamming4 {
 
   public encode(m: number[], par?: boolean): number[] {
     if (m.length !== 4) {
-      throw new Error('Array length must be 4.');
+      throw new Error('Input array must have a length of 4.');
     }
 
     // Ensure array contains only binary values
@@ -53,7 +53,7 @@ export class Hamming4 {
 
   public decode(rec: number[]): number[] {
     if (rec.length !== 7) {
-      throw new Error('Array length must be 7.');
+      throw new Error('Input array must have a length of 7.');
     }
 
     // Correct received matrix
@@ -72,7 +72,7 @@ export class Hamming4 {
 
   public correct(rec: number[]): number[] {
     if (rec.length !== 7) {
-      throw new Error('Array length must be 7.');
+      throw new Error('Input array must have a length of 7.');
     }
 
     // Get bit position at which error occured
