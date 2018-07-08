@@ -12,7 +12,7 @@
   },
   "pre-commit": [
     "rebuild",
-    "test"
+    "test-coverage"
   ],
   "keywords": [],
   "author": "Chidi Williams <williamschidi1@gmail.com> (https://www.github.com/chidiwilliams)",
