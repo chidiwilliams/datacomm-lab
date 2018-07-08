@@ -20,36 +20,36 @@ export class BPSK {
     if (baseband.length !== carrier.length) {
       throw new Error('Baseband and carrier must have the same length');
     }
+
+    // Ensure baseband only contains binary values
+    for (let i = 0; i < baseband.length; i++) {
+      if (baseband[i] !== 0 && baseband[i] !== 1) {
+        throw new Error('Input array must contain only zeros and ones.');
+      }
+    }
+
+    // Shift baseband phase
+    baseband = baseband.map((x) => (x === 1 ? 1 : -1));
+
     this._baseband = baseband;
     this._carrier = carrier;
 
-    // Shift phase
-    for (let i = 0; i < baseband.length; i++) {
-      this._baseband[i] = this._baseband[i] === 1 ? 1 : -1;
-    }
-
-    this._modulated = this.multArrays(this._baseband, this._carrier);
-    this._demodulated = this.multArrays(this._modulated, this._carrier);
+    this._modulated = this._multArrays(this._baseband, this._carrier);
+    this._demodulated = this._multArrays(this._modulated, this._carrier);
   }
 
   /**
    * Returns an array whose individual elements are the products
    * of the individual elements of the received arrays
    *
+   * @private
    * @param {number[]} a
    * @param {number[]} b
    * @returns {number[]}
    * @memberof BPSK
    */
-  public multArrays(a: number[], b: number[]): number[] {
-    if (a.length !== b.length) {
-      throw new Error('Arrays must have the same length');
-    }
-
-    const c = new Array(a.length + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
+  private _multArrays(a: number[], b: number[]): number[] {
+    const c = new Array(a.length);
 
     for (let i = 0; i < a.length; i++) {
       c[i] = a[i] * b[i];
@@ -93,6 +93,6 @@ export class BPSK {
       throw new Error('Invalid array length');
     }
 
-    return this.multArrays(rec, this._carrier);
+    return this._multArrays(rec, this._carrier);
   }
 }

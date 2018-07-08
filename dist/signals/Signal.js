@@ -8,7 +8,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var math = __importStar(require("mathjs"));
-var FFT_1 = require("../transforms/FFT");
+var __1 = require("../");
 /**
  *
  *
@@ -151,7 +151,7 @@ var Signal = /** @class */ (function () {
         // Convert signal to complex array
         var comp = this._signal.map(function (x) { return math.complex(x, 0); });
         // Compute FFT
-        var sigFFT = new FFT_1.FFT().fft(comp);
+        var sigFFT = new __1.FFT().fft(comp);
         // Compute two-sided spectrum
         var twoSSpectrum = new Array(this.signal.length);
         for (var i = 0; i < twoSSpectrum.length; i++) {

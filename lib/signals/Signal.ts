@@ -1,5 +1,5 @@
 import * as math from 'mathjs';
-import { FFT } from '../transforms/FFT';
+import { FFT } from '../';
 
 /**
  *

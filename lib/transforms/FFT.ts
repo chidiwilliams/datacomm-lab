@@ -22,9 +22,7 @@ export class FFT {
     }
 
     if (x.length % 2 !== 0) {
-      throw new Error(
-        `Length of array 'x' must be a power of 2. ${x.length} given`
-      );
+      throw new Error('Length of input array must be a multiple of 2.');
     }
 
     // FFT of even terms
@@ -65,6 +63,10 @@ export class FFT {
    * @memberof FFT
    */
   public ifft(x: math.Complex[]): math.Complex[] {
+    if (x.length % 2 !== 0) {
+      throw new Error('Length of input array must be a multiple of 2.');
+    }
+
     // Take conjugate
     let y: math.Complex[] = x.map((i) => math.complex(math.conj(i).toString()));
 
@@ -92,11 +94,11 @@ export class FFT {
    */
   public cconvolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
     if (x.length !== y.length) {
-      throw new Error('Arrays must have equal length.');
+      throw new Error('Arrays must have equal lengths.');
     }
 
-    if (x.length % 2 !== 0) {
-      throw new Error('Array lengths must be a power of 2');
+    if (x.length % 2 !== 0 || y.length % 2 !== 0) {
+      throw new Error('Length of input arrays must be a multiple of 2.');
     }
 
     // Compute FFT of each sequence
@@ -122,6 +124,14 @@ export class FFT {
    * @memberof FFT
    */
   public convolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
+    if (x.length !== y.length) {
+      throw new Error('Arrays must have equal lengths.');
+    }
+
+    if (x.length % 2 !== 0 || y.length % 2 !== 0) {
+      throw new Error('Length of input arrays must be a multiple of 2.');
+    }
+
     const ZERO: math.Complex = math.complex(0, 0);
 
     let a: math.Complex[] = new Array(2 * x.length);

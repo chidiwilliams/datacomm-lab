@@ -15,5 +15,5 @@ export { Hamming4 } from './codecs/Hamming4';
 // Filters
 export { Filter, FilterType } from './filters/Filter';
 
-// Utilities
+// Transforms
 export { FFT } from './transforms/FFT';

@@ -31,7 +31,7 @@ var FFT = /** @class */ (function () {
             return [x[0]];
         }
         if (x.length % 2 !== 0) {
-            throw new Error("Length of input array must be a power of 2.");
+            throw new Error('Length of input array must be a multiple of 2.');
         }
         // FFT of even terms
         var even = new Array(x.length / 2);
@@ -64,6 +64,9 @@ var FFT = /** @class */ (function () {
      * @memberof FFT
      */
     FFT.prototype.ifft = function (x) {
+        if (x.length % 2 !== 0) {
+            throw new Error('Length of input array must be a multiple of 2.');
+        }
         // Take conjugate
         var y = x.map(function (i) { return math.complex(math.conj(i).toString()); });
         // Compute forward FFT
@@ -86,10 +89,10 @@ var FFT = /** @class */ (function () {
      */
     FFT.prototype.cconvolve = function (x, y) {
         if (x.length !== y.length) {
-            throw new Error('Arrays must have equal length.');
+            throw new Error('Arrays must have equal lengths.');
         }
-        if (x.length % 2 !== 0) {
-            throw new Error('Array lengths must be a power of 2');
+        if (x.length % 2 !== 0 || y.length % 2 !== 0) {
+            throw new Error('Length of input arrays must be a multiple of 2.');
         }
         // Compute FFT of each sequence
         var a = this.fft(x);
@@ -111,6 +114,12 @@ var FFT = /** @class */ (function () {
      * @memberof FFT
      */
     FFT.prototype.convolve = function (x, y) {
+        if (x.length !== y.length) {
+            throw new Error('Arrays must have equal lengths.');
+        }
+        if (x.length % 2 !== 0 || y.length % 2 !== 0) {
+            throw new Error('Length of input arrays must be a multiple of 2.');
+        }
         var ZERO = math.complex(0, 0);
         var a = new Array(2 * x.length);
         a = x.slice(0);

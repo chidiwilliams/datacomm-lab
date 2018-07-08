@@ -20,17 +20,30 @@ export class Hamming4 {
     [0, 0, 0, 0, 0, 0, 1],
   ];
 
+  /**
+   * Checks if input array contains only binary values.
+   * Returns true if array is binary, else throws error.
+   *
+   * @private
+   * @param {number[]} m Input array
+   * @returns {boolean}
+   * @memberof Hamming4
+   */
+  private _isArrayBinary(m: number[]): boolean {
+    for (let i = 0; i < m.length; i++) {
+      if (m[i] !== 0 && m[i] !== 1) {
+        throw new Error('Input array must contain only zeros and ones.');
+      }
+    }
+    return true;
+  }
+
   public encode(m: number[], par?: boolean): number[] {
     if (m.length !== 4) {
       throw new Error('Input array must have a length of 4.');
     }
 
-    // Ensure array contains only binary values
-    for (let i = 0; i < m.length; i++) {
-      if (m[i] != 0 && m[i] != 1) {
-        throw new Error('Input array must contain only zeros and ones.');
-      }
-    }
+    this._isArrayBinary(m);
 
     // Do Hamming
     const out: number[] = [0, 0, 0, 0, 0, 0, 0];
@@ -56,6 +69,8 @@ export class Hamming4 {
       throw new Error('Input array must have a length of 7.');
     }
 
+    this._isArrayBinary(rec);
+
     // Correct received matrix
     const cor: number[] = this.correct(rec);
 
@@ -75,8 +90,10 @@ export class Hamming4 {
       throw new Error('Input array must have a length of 7.');
     }
 
+    this._isArrayBinary(rec);
+
     // Get bit position at which error occured
-    const errBit = this.getErrorBit(rec);
+    const errBit = this._getErrorBit(rec);
     // If bit position >= 0, switch bit at that position
     if (errBit >= 0) {
       rec[errBit] = rec[errBit] === 0 ? 1 : 0;
@@ -84,9 +101,9 @@ export class Hamming4 {
     return rec;
   }
 
-  private getErrorBit(rec: number[]): number {
+  private _getErrorBit(rec: number[]): number {
     // Get the syndrome matrix
-    const syn = this.getSyndrome(rec);
+    const syn = this._getSyndrome(rec);
 
     let err = -1;
     for (let i = 0; i < syn.length; i++) {
@@ -96,11 +113,7 @@ export class Hamming4 {
     return err;
   }
 
-  private getSyndrome(rec: number[]): number[] {
-    if (rec.length !== 7) {
-      throw new Error('Array length must be 7.');
-    }
-
+  private _getSyndrome(rec: number[]): number[] {
     const syn: number[] = [0, 0, 0];
 
     for (let i = 0; i < 3; i++) {
