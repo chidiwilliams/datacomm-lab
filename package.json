@@ -5,10 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "rebuild": "rm './dist/' -rf && tsc",
     "build": "tsc",
-    "test": "mocha --reporter spec"
+    "test": " mocha --reporter spec"
   },
   "pre-commit": [
+    "rebuild",
     "test"
   ],
   "keywords": [],
