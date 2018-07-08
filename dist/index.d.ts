@@ -1,5 +1,4 @@
 export { Signal } from './signals/Signal';
-export { ComplexSignal } from './signals/ComplexSignal';
 export { CarrierSignal } from './signals/CarrierSignal';
 export { BPSK } from './modulations/BPSK';
 export { AWGN } from './impairments/AWGN';

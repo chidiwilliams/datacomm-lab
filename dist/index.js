@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Signals
 var Signal_1 = require("./signals/Signal");
 exports.Signal = Signal_1.Signal;
-var ComplexSignal_1 = require("./signals/ComplexSignal");
-exports.ComplexSignal = ComplexSignal_1.ComplexSignal;
 var CarrierSignal_1 = require("./signals/CarrierSignal");
 exports.CarrierSignal = CarrierSignal_1.CarrierSignal;
 // Modulation Schemes
