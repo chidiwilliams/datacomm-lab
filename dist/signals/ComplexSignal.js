@@ -71,8 +71,7 @@ var ComplexSignal = /** @class */ (function (_super) {
     ComplexSignal.prototype.magnitude = function () {
         var m = new Array(this._jSignal.length);
         for (var i = 0; i < this._jSignal.length; i++) {
-            var complexNum = this._jSignal[i];
-            m[i] = Math.sqrt(Math.pow(complexNum.re, 2) + Math.pow(complexNum.im, 2));
+            m[i] = this._jSignal[i].toPolar().r;
         }
         return m;
     };

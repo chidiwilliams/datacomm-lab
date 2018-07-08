@@ -6,9 +6,24 @@ const Signal = require('./signals/Signal');
 const BPSK = require('./modulations/BPSK');
 
 // Signals
+
+// Signal
 describe('Signal functions', () => {
-  // it('should compute the Frequency magnitude response', () => Signal.fRes());
+  it('should create empty Signal array', () => Signal.create());
+  it('should set Signal array', () => Signal.setSignal());
+  it('should get Signal array value at an index', () =>
+    Signal.getSignalValue());
+  it('should set Signal array value at an index', () =>
+    Signal.setSignalValue());
+  it('should sample a signal', () => Signal.sample());
+  it('should not sample a signal if the new sampling frequency is not a multiple of the previous', () =>
+    Signal.rejectSampleForNonMultipleFreq());
+  it('should compute the Frequency magnitude response', () => Signal.fRes());
 });
+
+// Complex Signal
+
+// Carrier Signal
 
 // Utilities
 

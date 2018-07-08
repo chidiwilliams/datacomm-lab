@@ -61,8 +61,7 @@ export class ComplexSignal extends Signal {
   public magnitude(): number[] {
     const m: number[] = new Array(this._jSignal.length);
     for (let i = 0; i < this._jSignal.length; i++) {
-      const complexNum = this._jSignal[i];
-      m[i] = Math.sqrt(Math.pow(complexNum.re, 2) + Math.pow(complexNum.im, 2));
+      m[i] = this._jSignal[i].toPolar().r;
     }
     return m;
   }
