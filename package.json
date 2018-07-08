@@ -7,11 +7,12 @@
   "scripts": {
     "rebuild": "rm './dist/' -rf && tsc",
     "build": "tsc",
-    "test": " mocha --reporter spec"
+    "test": "mocha --reporter spec",
+    "test-coverage": "nyc --check-coverage --lines 60 npm test"
   },
   "pre-commit": [
     "rebuild",
-    "test"
+    "test-coverage"
   ],
   "keywords": [],
   "author": "Chidi Williams <williamschidi1@gmail.com> (https://www.github.com/chidiwilliams)",
