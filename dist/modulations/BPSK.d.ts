@@ -6,6 +6,7 @@
  */
 export declare class BPSK {
     private _baseband;
+    private _basebandPShifted;
     private _carrier;
     private _modulated;
     private _demodulated;

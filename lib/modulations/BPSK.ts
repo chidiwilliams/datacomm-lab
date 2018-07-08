@@ -6,6 +6,7 @@
  */
 export class BPSK {
   private _baseband: number[];
+  private _basebandPShifted: number[];
   private _carrier: number[];
   private _modulated: number[];
   private _demodulated: number[];
@@ -18,23 +19,22 @@ export class BPSK {
    */
   constructor(baseband: number[], carrier: number[]) {
     if (baseband.length !== carrier.length) {
-      throw new Error('Baseband and carrier must have the same length');
+      throw new Error('Baseband and carrier must have the same length.');
     }
 
     // Ensure baseband only contains binary values
     for (let i = 0; i < baseband.length; i++) {
       if (baseband[i] !== 0 && baseband[i] !== 1) {
-        throw new Error('Input array must contain only zeros and ones.');
+        throw new Error('Baseband signal must contain only binary values.');
       }
     }
 
     // Shift baseband phase
-    baseband = baseband.map((x) => (x === 1 ? 1 : -1));
-
     this._baseband = baseband;
+    this._basebandPShifted = baseband.map((x) => (x === 1 ? 1 : -1));
     this._carrier = carrier;
 
-    this._modulated = this._multArrays(this._baseband, this._carrier);
+    this._modulated = this._multArrays(this._basebandPShifted, this._carrier);
     this._demodulated = this._multArrays(this._modulated, this._carrier);
   }
 
@@ -90,7 +90,7 @@ export class BPSK {
    */
   public demodulate(rec: number[]): number[] {
     if (rec.length != this._demodulated.length) {
-      throw new Error('Invalid array length');
+      throw new Error('Received signal and carrier must have the same length.');
     }
 
     return this._multArrays(rec, this._carrier);

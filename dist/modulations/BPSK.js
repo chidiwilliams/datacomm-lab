@@ -15,19 +15,19 @@ var BPSK = /** @class */ (function () {
      */
     function BPSK(baseband, carrier) {
         if (baseband.length !== carrier.length) {
-            throw new Error('Baseband and carrier must have the same length');
+            throw new Error('Baseband and carrier must have the same length.');
         }
         // Ensure baseband only contains binary values
         for (var i = 0; i < baseband.length; i++) {
             if (baseband[i] !== 0 && baseband[i] !== 1) {
-                throw new Error('Input array must contain only zeros and ones.');
+                throw new Error('Baseband signal must contain only binary values.');
             }
         }
         // Shift baseband phase
-        baseband = baseband.map(function (x) { return (x === 1 ? 1 : -1); });
         this._baseband = baseband;
+        this._basebandPShifted = baseband.map(function (x) { return (x === 1 ? 1 : -1); });
         this._carrier = carrier;
-        this._modulated = this._multArrays(this._baseband, this._carrier);
+        this._modulated = this._multArrays(this._basebandPShifted, this._carrier);
         this._demodulated = this._multArrays(this._modulated, this._carrier);
     }
     /**
@@ -85,7 +85,7 @@ var BPSK = /** @class */ (function () {
      */
     BPSK.prototype.demodulate = function (rec) {
         if (rec.length != this._demodulated.length) {
-            throw new Error('Invalid array length');
+            throw new Error('Received signal and carrier must have the same length.');
         }
         return this._multArrays(rec, this._carrier);
     };

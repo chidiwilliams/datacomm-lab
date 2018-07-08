@@ -3,6 +3,7 @@ const FFT = require('./transforms/FFT');
 const Hamming4 = require('./codecs/Hamming4');
 const AWGN = require('./impairments/AWGN');
 const Signal = require('./signals/Signal');
+const BPSK = require('./modulations/BPSK');
 
 // Signals
 describe('Signal functions', () => {
@@ -46,7 +47,18 @@ describe('AWGN functions', () => {
 // MODULATION SCHEMES
 
 // BPSK
-describe('BPSK functions', () => {});
+describe('BPSK functions', () => {
+  it('should perform BPSK modulation', () => BPSK.bpskMod());
+  it('should not perform BPSK modulation if baseband and carrier have different lengths', () =>
+    BPSK.rejectBpskModForLenMismatch());
+  it('should not perform BPSK modulation if baseband contains one or more non-binary values', () =>
+    BPSK.rejectBpskModForNonBinaryBB());
+  it('should perform BPSK demodulation', () => BPSK.bpskDemod());
+  it('should perform BPSK demodulation with given signal', () =>
+    BPSK.bpskGvnDemod());
+  it('should not perform BPSK demodulation if given signal and carrier have different lengths', () =>
+    BPSK.rejectBpskGvnDemodForLenMismatch());
+});
 
 // FFT
 describe('FFT functions', () => {
