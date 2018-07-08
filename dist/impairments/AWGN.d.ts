@@ -13,7 +13,7 @@ export declare class AWGN {
      * @returns {number[]}
      * @memberof AWGN
      */
-    generate(numSamples: number, amp?: number): number[];
+    generate(numSamples: number): number[];
     /**
      * Generates new Gaussian random number
      *

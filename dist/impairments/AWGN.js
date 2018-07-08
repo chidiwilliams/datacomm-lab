@@ -17,11 +17,10 @@ var AWGN = /** @class */ (function () {
      * @returns {number[]}
      * @memberof AWGN
      */
-    AWGN.prototype.generate = function (numSamples, amp) {
-        amp = amp || 1;
+    AWGN.prototype.generate = function (numSamples) {
         var n = new Array(numSamples);
         for (var i = 0; i < n.length; i++) {
-            n[i] = this.next() * amp;
+            n[i] = this.next();
         }
         return n;
     };
