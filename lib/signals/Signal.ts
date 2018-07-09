@@ -46,6 +46,17 @@ export class Signal {
   }
 
   /**
+   * Get the sampling frequency given as the length of the signal
+   *
+   * @readonly
+   * @type {number}
+   * @memberof Signal
+   */
+  public get Fs(): number {
+    return this._signal.length;
+  }
+
+  /**
    * Get the value of the signal at a sample value
    *
    * @param {number} index

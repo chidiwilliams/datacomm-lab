@@ -25,6 +25,14 @@ export declare class Signal {
     */
     signal: number[];
     /**
+     * Get the sampling frequency given as the length of the signal
+     *
+     * @readonly
+     * @type {number}
+     * @memberof Signal
+     */
+    readonly Fs: number;
+    /**
      * Get the value of the signal at a sample value
      *
      * @param {number} index

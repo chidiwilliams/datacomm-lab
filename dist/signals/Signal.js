@@ -51,6 +51,20 @@ var Signal = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Signal.prototype, "Fs", {
+        /**
+         * Get the sampling frequency given as the length of the signal
+         *
+         * @readonly
+         * @type {number}
+         * @memberof Signal
+         */
+        get: function () {
+            return this._signal.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Get the value of the signal at a sample value
      *

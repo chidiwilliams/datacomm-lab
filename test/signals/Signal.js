@@ -50,7 +50,11 @@ const rejectSampleForNonMultipleFreq = () => {
 
 const fRes = () => {
   // Generate sine wave with frequency of 4
-  const res = new lab.CarrierSignal(16, 4).getFrequencyResponse();
+  const res = new lab.WaveSignal(
+    lab.WaveSignalType.SINE,
+    16,
+    4
+  ).getFrequencyResponse();
 
   // Every frequency except 4 must have magnitude of zero
   res
