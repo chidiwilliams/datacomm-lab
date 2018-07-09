@@ -18,10 +18,10 @@ const fft = () => {
   ]);
 };
 
-const rejectFFTForOddArrayLength = () => {
+const rejectFFTForNonPow2ArrLen = () => {
   const fft = new lab.FFT();
   expect(() => fft.fft([1, 0, 1, 0, 1])).to.throw(
-    'Length of input array must be a multiple of 2.'
+    'Signal sampling frequency must be a power of 2.'
   );
 };
 
@@ -41,10 +41,10 @@ const ifft = () => {
   ]);
 };
 
-const rejectIFFTForOddArrayLength = () => {
+const rejectIFFTForNonPow2ArrLen = () => {
   const fft = new lab.FFT();
   expect(() => fft.ifft([1, 0, 1, 0, 1])).to.throw(
-    'Length of input array must be a multiple of 2.'
+    'Signal sampling frequency must be a power of 2.'
   );
 };
 
@@ -59,10 +59,10 @@ const cconvolve = () => {
   ]);
 };
 
-const rejectCConvolveForOddArrayLength = () => {
+const rejectCConvolveForNonPow2ArrLen = () => {
   const fft = new lab.FFT();
   expect(() => fft.cconvolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])).to.throw(
-    'Length of input arrays must be a multiple of 2.'
+    'Signal sampling frequency must be a power of 2.'
   );
 };
 
@@ -84,10 +84,10 @@ const convolve = () => {
   ]);
 };
 
-const rejectConvolveForOddArrayLength = () => {
+const rejectConvolveForNonPow2ArrLen = () => {
   const fft = new lab.FFT();
   expect(() => fft.convolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])).to.throw(
-    'Length of input arrays must be a multiple of 2.'
+    'Signal sampling frequency must be a power of 2.'
   );
 };
 
@@ -100,13 +100,13 @@ const rejectConvolveForLengthMismatch = () => {
 
 module.exports = {
   fft,
-  rejectFFTForOddArrayLength,
+  rejectFFTForNonPow2ArrLen,
   ifft,
-  rejectIFFTForOddArrayLength,
+  rejectIFFTForNonPow2ArrLen,
   cconvolve,
-  rejectCConvolveForOddArrayLength,
+  rejectCConvolveForNonPow2ArrLen,
   rejectCConvolveForLengthMismatch,
   convolve,
-  rejectConvolveForOddArrayLength,
+  rejectConvolveForNonPow2ArrLen,
   rejectConvolveForLengthMismatch,
 };

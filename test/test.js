@@ -78,19 +78,19 @@ describe('BPSK functions', () => {
 // FFT
 describe('FFT functions', () => {
   it('should perform FFT', () => FFT.fft());
-  it('should not perform FFT of array with odd length', () =>
-    FFT.rejectFFTForOddArrayLength());
+  it('should not perform FFT if array length is not a power of 2', () =>
+    FFT.rejectFFTForNonPow2ArrLen());
   it('should perform IFFT', () => FFT.ifft());
-  it('should not perform IFFT of array with odd length', () =>
-    FFT.rejectIFFTForOddArrayLength());
+  it('should not perform IFFT if array length is not a power of 2', () =>
+    FFT.rejectIFFTForNonPow2ArrLen());
   it('should perform Circular Convolution', () => FFT.cconvolve());
-  it('should not perform Circular Convolution of arrays with odd length', () =>
-    FFT.rejectCConvolveForOddArrayLength());
+  it('should not perform Circular Convolution if the sampling frequency of the signals is not a power of 2', () =>
+    FFT.rejectCConvolveForNonPow2ArrLen());
   it('should not perform Circular Convolution of two arrays of different lengths', () =>
     FFT.rejectCConvolveForLengthMismatch());
   it('should perform Convolution', () => FFT.convolve());
-  it('should not perform Convolution of arrays with odd length', () =>
-    FFT.rejectConvolveForOddArrayLength());
+  it('should not perform Convolution if the sampling frequency of the signals is not a power of 2', () =>
+    FFT.rejectConvolveForNonPow2ArrLen());
   it('should not perform Convolution of two arrays of different lengths', () =>
     FFT.rejectConvolveForLengthMismatch());
 });
