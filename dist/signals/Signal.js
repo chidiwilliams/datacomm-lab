@@ -22,10 +22,10 @@ var Signal = /** @class */ (function () {
      * @memberof Signal
      */
     function Signal(Fs) {
-        this._signal = new Array(Fs + 1)
-            .join('0')
-            .split('')
-            .map(parseFloat);
+        this._signal = new Array(Fs);
+        for (var i = 0; i < Fs; i++) {
+            this._signal[i] = 0;
+        }
     }
     Object.defineProperty(Signal.prototype, "signal", {
         /**
@@ -44,7 +44,7 @@ var Signal = /** @class */ (function () {
          */
         set: function (signal) {
             if (signal.length !== this._signal.length) {
-                throw new Error('Invalid signal length');
+                throw new Error('Invalid signal length.');
             }
             this._signal = signal;
         },
@@ -85,51 +85,51 @@ var Signal = /** @class */ (function () {
     Signal.prototype.setSignalValue = function (index, value) {
         this._signal[index] = value;
     };
+    Signal.prototype.sample = function (Fs) {
+        if (Fs < this.Fs && this.Fs % Fs !== 0) {
+            throw new Error('The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.');
+        }
+        if (Fs > this.Fs && Fs % this.Fs !== 0) {
+            throw new Error('The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.');
+        }
+        return Fs < this.Fs
+            ? this._sampleLess(Fs)
+            : this._sampleMore(Fs);
+    };
     /**
-     * Samples the signal at the given frequency. For accuracy,
-     * the sampling frequency must be a factor of the original
-     * signal sampling frequency.
+     * Samples the signal at the given frequency higher than the
+     * original frequency. For accuracy, the new sampling frequency must
+     * be a multiple of the original signal sampling frequency.
      *
+     * @private
      * @param {number} Fs Sampling frequency
      * @returns {number[]} Sampled signal array
      * @memberof Signal
      */
-    Signal.prototype.sample = function (Fs) {
-        if (Fs % this._signal.length !== 0) {
-            throw new Error('New sampling frequency must be a multiple of the previous sampling frequency');
-        }
+    Signal.prototype._sampleMore = function (Fs) {
         var r = new Array(Fs);
-        var fact = Fs / this._signal.length;
+        var k = Fs / this.Fs;
         for (var i = 0; i < r.length; i++) {
-            r[i] = this._signal[Math.floor(i / fact)];
+            r[i] = this._signal[Math.floor(i / k)];
         }
         return r;
     };
     /**
-     * Returns the threshold values per numThresh divisions of the array
+     * Samples the signal at the given frequency lower than the
+     * original frequency.
      *
-     * @param {number} numThresh
-     * @returns {number[]}
+     * @private
+     * @param {number} Fs Sampling frequency
+     * @returns {number[]} Sampled signal array
      * @memberof Signal
      */
-    Signal.prototype.getThresholds = function (numThresh) {
-        if (numThresh > this.signal.length) {
-            throw new Error('Number of thresholds must be less than number of samples');
-        }
-        var thresholds = new Array(numThresh);
-        var points = new Array(numThresh);
-        // Get threshold points
-        var beginning = Math.ceil(Math.floor(this.signal.length / numThresh / 2) - 1);
-        var width = Math.ceil(Math.floor(this.signal.length / numThresh));
-        for (var i = 0; i < numThresh; i++) {
-            points[i] = width * i + beginning;
-        }
-        // Get thresholds
-        for (var i = 0; i < numThresh; i++) {
-            var point = points[i];
-            thresholds[i] = this.signal[point] > 0 ? 1 : 0;
-        }
-        return thresholds;
+    Signal.prototype._sampleLess = function (Fs) {
+        // Get the number of samples in each division of the current array
+        // to be represented by one sample in the new array
+        var k = this.Fs / Fs;
+        // Get the sample in the middle of the division, favoring the
+        // earlier sample in the event of an even-length division
+        return this._signal.filter(function (x, i) { return (i + Math.floor(k / 2) + 1) % k === 0; });
     };
     /**
      * Returns the frequency magnitude response of the signal
@@ -138,9 +138,6 @@ var Signal = /** @class */ (function () {
      * @memberof Signal
      */
     Signal.prototype.getFrequencyResponse = function () {
-        if (isNaN(this._signal[0])) {
-            throw new Error('Please add a signal array first');
-        }
         if (!__1.FFT.isRadix2(this._signal.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }

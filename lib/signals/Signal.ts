@@ -16,10 +16,10 @@ export class Signal {
    * @memberof Signal
    */
   constructor(Fs: number) {
-    this._signal = new Array(Fs + 1)
-      .join('0')
-      .split('')
-      .map(parseFloat);
+    this._signal = new Array(Fs);
+    for (let i = 0; i < Fs; i++) {
+      this._signal[i] = 0;
+    }
   }
 
   /**
@@ -39,7 +39,7 @@ export class Signal {
    */
   public set signal(signal: number[]) {
     if (signal.length !== this._signal.length) {
-      throw new Error('Invalid signal length');
+      throw new Error('Invalid signal length.');
     }
 
     this._signal = signal;
@@ -78,65 +78,60 @@ export class Signal {
     this._signal[index] = value;
   }
 
+  public sample(Fs: number): number[] {
+    if (Fs < this.Fs && this.Fs % Fs !== 0) {
+      throw new Error(
+        'The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.'
+      );
+    }
+
+    if (Fs > this.Fs && Fs % this.Fs !== 0) {
+      throw new Error(
+        'The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.'
+      );
+    }
+
+    return Fs < this.Fs
+        ? this._sampleLess(Fs)
+        : this._sampleMore(Fs);
+  }
+
   /**
-   * Samples the signal at the given frequency. For accuracy,
-   * the sampling frequency must be a factor of the original
-   * signal sampling frequency.
+   * Samples the signal at the given frequency higher than the
+   * original frequency. For accuracy, the new sampling frequency must
+   * be a multiple of the original signal sampling frequency.
    *
+   * @private
    * @param {number} Fs Sampling frequency
    * @returns {number[]} Sampled signal array
    * @memberof Signal
    */
-  public sample(Fs: number): number[] {
-    if (Fs % this._signal.length !== 0) {
-      throw new Error(
-        'New sampling frequency must be a multiple of the previous sampling frequency'
-      );
-    }
-
+  private _sampleMore(Fs: number): number[] {
     const r: number[] = new Array(Fs);
-    const fact: number = Fs / this._signal.length;
+    const k: number = Fs / this.Fs;
     for (let i = 0; i < r.length; i++) {
-      r[i] = this._signal[Math.floor(i / fact)];
+      r[i] = this._signal[Math.floor(i / k)];
     }
 
     return r;
   }
 
   /**
-   * Returns the threshold values per numThresh divisions of the array
+   * Samples the signal at the given frequency lower than the
+   * original frequency.
    *
-   * @param {number} numThresh
-   * @returns {number[]}
+   * @private
+   * @param {number} Fs Sampling frequency
+   * @returns {number[]} Sampled signal array
    * @memberof Signal
    */
-  public getThresholds(numThresh: number): number[] {
-    if (numThresh > this.signal.length) {
-      throw new Error(
-        'Number of thresholds must be less than number of samples'
-      );
-    }
-
-    const thresholds: number[] = new Array(numThresh);
-    const points: number[] = new Array(numThresh);
-
-    // Get threshold points
-    const beginning = Math.ceil(
-      Math.floor(this.signal.length / numThresh / 2) - 1
-    );
-    const width = Math.ceil(Math.floor(this.signal.length / numThresh));
-
-    for (let i = 0; i < numThresh; i++) {
-      points[i] = width * i + beginning;
-    }
-
-    // Get thresholds
-    for (let i = 0; i < numThresh; i++) {
-      const point = points[i];
-      thresholds[i] = this.signal[point] > 0 ? 1 : 0;
-    }
-
-    return thresholds;
+  private _sampleLess(Fs: number): number[] {
+    // Get the number of samples in each division of the current array
+    // to be represented by one sample in the new array
+    const k: number = this.Fs / Fs;
+    // Get the sample in the middle of the division, favoring the
+    // earlier sample in the event of an even-length division
+    return this._signal.filter((x, i) => (i + Math.floor(k / 2) + 1) % k === 0);
   }
 
   /**
@@ -146,10 +141,6 @@ export class Signal {
    * @memberof Signal
    */
   public getFrequencyResponse() {
-    if (isNaN(this._signal[0])) {
-      throw new Error('Please add a signal array first');
-    }
-
     if (!FFT.isRadix2(this._signal.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }

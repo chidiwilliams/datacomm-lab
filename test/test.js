@@ -11,14 +11,23 @@ const BPSK = require('./modulations/BPSK');
 describe('Signal functions', () => {
   it('should create empty Signal array', () => Signal.create());
   it('should set Signal array', () => Signal.setSignal());
+  it('should not set Signal array with an array of a different length', () =>
+    Signal.rejectSetSignalForChangeLen());
   it('should get Signal array value at an index', () =>
     Signal.getSignalValue());
   it('should set Signal array value at an index', () =>
     Signal.setSignalValue());
-  it('should sample a signal', () => Signal.sample());
-  it('should not sample a signal if the new sampling frequency is not a multiple of the previous', () =>
-    Signal.rejectSampleForNonMultipleFreq());
+  it('should sample a signal at a lower sampling frequency', () =>
+    Signal.sampleLower());
+  it('should not sample a signal if the new sampling frequency is lower and not a factor of the current sampling frequency', () =>
+    Signal.rejectSampleLowerForNonFactFreq());
+  it('should sample a signal at a higher sampling frequency', () =>
+    Signal.sampleHigher());
+  it('should not sample a signal if the new sampling frequency is lower and not a factor of the current sampling frequency', () =>
+    Signal.rejectSampleHigherForNonMultFreq());
   it('should compute the Frequency magnitude response', () => Signal.fRes());
+  it('should not compute the Frequency magnitude response if the sampling frequency is not a power of 2', () =>
+    Signal.rejectFResForNonPow2Fs());
 });
 
 // Wave Signal

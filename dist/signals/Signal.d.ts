@@ -48,24 +48,28 @@ export declare class Signal {
      * @memberof Signal
      */
     setSignalValue(index: number, value: number): void;
+    sample(Fs: number): number[];
     /**
-     * Samples the signal at the given frequency. For accuracy,
-     * the sampling frequency must be a factor of the original
-     * signal sampling frequency.
+     * Samples the signal at the given frequency higher than the
+     * original frequency. For accuracy, the new sampling frequency must
+     * be a multiple of the original signal sampling frequency.
      *
+     * @private
      * @param {number} Fs Sampling frequency
      * @returns {number[]} Sampled signal array
      * @memberof Signal
      */
-    sample(Fs: number): number[];
+    private _sampleMore;
     /**
-     * Returns the threshold values per numThresh divisions of the array
+     * Samples the signal at the given frequency lower than the
+     * original frequency.
      *
-     * @param {number} numThresh
-     * @returns {number[]}
+     * @private
+     * @param {number} Fs Sampling frequency
+     * @returns {number[]} Sampled signal array
      * @memberof Signal
      */
-    getThresholds(numThresh: number): number[];
+    private _sampleLess;
     /**
      * Returns the frequency magnitude response of the signal
      *

@@ -18,6 +18,12 @@ const setSignal = () => {
   expect(sig.signal).to.eql([1, 1]);
 };
 
+const rejectSetSignalForChangeLen = () => {
+  const sig = new lab.Signal(2);
+
+  expect(() => (sig.signal = [1, 2, 3, 4])).to.throw('Invalid signal length.');
+};
+
 const getSignalValue = () => {
   const sig = new lab.Signal(2);
   sig.signal = [1, 0];
@@ -34,17 +40,31 @@ const setSignalValue = () => {
   expect(sig.signal).to.eql([1, 1, 0, 1]);
 };
 
-const sample = () => {
+const sampleLower = () => {
+  const sig = new lab.Signal(6);
+  sig.signal = [1, 2, 3, 4, 5, 6];
+
+  expect(sig.sample(2)).to.eql([2, 5]);
+};
+
+const rejectSampleLowerForNonFactFreq = () => {
+  const sig = new lab.Signal(32);
+  expect(() => sig.sample(5)).to.throw(
+    'The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.'
+  );
+};
+
+const sampleHigher = () => {
   const sig = new lab.Signal(3);
   sig.signal = [1, 0, 1];
 
   expect(sig.sample(6)).to.eql([1, 1, 0, 0, 1, 1]);
 };
 
-const rejectSampleForNonMultipleFreq = () => {
+const rejectSampleHigherForNonMultFreq = () => {
   const sig = new lab.Signal(4);
   expect(() => sig.sample(11)).to.throw(
-    'New sampling frequency must be a multiple of the previous sampling frequency'
+    'The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.'
   );
 };
 
@@ -68,12 +88,25 @@ const fRes = () => {
   expect(mth.equal(res[4], 1)).to.be.true;
 };
 
+const rejectFResForNonPow2Fs = () => {
+  // Generate sine wave with Fs = 21
+  const sig = new lab.WaveSignal(lab.WaveSignalType.SINE, 21, 4);
+
+  expect(() => sig.getFrequencyResponse()).to.throw(
+    'Signal sampling frequency must be a power of 2.'
+  );
+};
+
 module.exports = {
   create,
   setSignal,
   getSignalValue,
   setSignalValue,
-  sample,
-  rejectSampleForNonMultipleFreq,
+  rejectSetSignalForChangeLen,
+  sampleLower,
+  rejectSampleLowerForNonFactFreq,
+  sampleHigher,
+  rejectSampleHigherForNonMultFreq,
   fRes,
+  rejectFResForNonPow2Fs,
 };
