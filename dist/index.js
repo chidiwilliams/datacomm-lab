@@ -5,6 +5,9 @@ var Signal_1 = require("./signals/Signal");
 exports.Signal = Signal_1.Signal;
 var CarrierSignal_1 = require("./signals/CarrierSignal");
 exports.CarrierSignal = CarrierSignal_1.CarrierSignal;
+var WaveSignal_1 = require("./signals/WaveSignal");
+exports.WaveSignal = WaveSignal_1.WaveSignal;
+exports.WaveSignalType = WaveSignal_1.WaveSignalType;
 // Modulation Schemes
 var BPSK_1 = require("./modulations/BPSK");
 exports.BPSK = BPSK_1.BPSK;

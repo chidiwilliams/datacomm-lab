@@ -1,6 +1,7 @@
 // Signals
 export { Signal } from './signals/Signal';
 export { CarrierSignal } from './signals/CarrierSignal';
+export { WaveSignal, WaveSignalType } from './signals/WaveSignal';
 
 // Modulation Schemes
 export { BPSK } from './modulations/BPSK';

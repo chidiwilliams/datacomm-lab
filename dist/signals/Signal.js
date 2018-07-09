@@ -72,27 +72,6 @@ var Signal = /** @class */ (function () {
         this._signal[index] = value;
     };
     /**
-     * Prints the signal array to console.
-     * Setting `numbering` to true prepends 1., 2., 3., etc.
-     * to the array values.
-     *
-     * @param {string} header
-     * @param {boolean} [numbering]
-     * @memberof Signal
-     */
-    Signal.prototype.print = function (header, numbering) {
-        console.log(header);
-        for (var i = 0; i < this.signal.length; i++) {
-            var value = this.signal[i];
-            if (numbering === true) {
-                console.log(i + ". " + value);
-            }
-            else {
-                console.log(value);
-            }
-        }
-    };
-    /**
      * Samples the signal at the given frequency. For accuracy,
      * the sampling frequency must be a factor of the original
      * signal sampling frequency.
@@ -148,6 +127,9 @@ var Signal = /** @class */ (function () {
         if (isNaN(this._signal[0])) {
             throw new Error('Please add a signal array first');
         }
+        if (!this.isRadix2(this._signal.length)) {
+            throw new Error('Signal sampling frequency must be a power of 2.');
+        }
         // Convert signal to complex array
         var comp = this._signal.map(function (x) { return math.complex(x, 0); });
         // Compute FFT
@@ -163,6 +145,13 @@ var Signal = /** @class */ (function () {
             .slice(0, twoSSpectrum.length / 2 + 1)
             .map(function (x, i, arr) { return (i === 0 || i === arr.length - 1 ? x : x * 2); });
         return sinSSpectrum;
+    };
+    Signal.prototype.isRadix2 = function (n) {
+        if (n <= 0 || n % 2 !== 0)
+            return false;
+        if (n === 2)
+            return true;
+        return this.isRadix2(n / 2);
     };
     return Signal;
 }());

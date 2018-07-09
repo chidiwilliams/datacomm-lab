@@ -41,16 +41,6 @@ export declare class Signal {
      */
     setSignalValue(index: number, value: number): void;
     /**
-     * Prints the signal array to console.
-     * Setting `numbering` to true prepends 1., 2., 3., etc.
-     * to the array values.
-     *
-     * @param {string} header
-     * @param {boolean} [numbering]
-     * @memberof Signal
-     */
-    print(header: string, numbering?: boolean): void;
-    /**
      * Samples the signal at the given frequency. For accuracy,
      * the sampling frequency must be a factor of the original
      * signal sampling frequency.
@@ -75,4 +65,5 @@ export declare class Signal {
      * @memberof Signal
      */
     getFrequencyResponse(): number[];
+    isRadix2(n: number): boolean;
 }
