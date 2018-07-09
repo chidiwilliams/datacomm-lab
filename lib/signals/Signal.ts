@@ -78,6 +78,17 @@ export class Signal {
     this._signal[index] = value;
   }
 
+  /**
+   * Returns the signal sampled at the given frequency. If the new
+   * sampling frequency is higher than the current signal sampling
+   * frequency, it must be a multiple of the current signal sampling
+   * frequency. If it is lower, it must be a factor of the current
+   * signal sampling frequency.
+   *
+   * @param {number} Fs New sampling frequency
+   * @returns {number[]} Sampled signal array
+   * @memberof Signal
+   */
   public sample(Fs: number): number[] {
     if (Fs < this.Fs && this.Fs % Fs !== 0) {
       throw new Error(
@@ -91,47 +102,24 @@ export class Signal {
       );
     }
 
-    return Fs < this.Fs
-        ? this._sampleLess(Fs)
-        : this._sampleMore(Fs);
-  }
+    // Initialize array with zeros for mapping
+    let r: number[] = new Array(Fs + 1)
+      .join('0')
+      .split('')
+      .map(parseFloat);
 
-  /**
-   * Samples the signal at the given frequency higher than the
-   * original frequency. For accuracy, the new sampling frequency must
-   * be a multiple of the original signal sampling frequency.
-   *
-   * @private
-   * @param {number} Fs Sampling frequency
-   * @returns {number[]} Sampled signal array
-   * @memberof Signal
-   */
-  private _sampleMore(Fs: number): number[] {
-    const r: number[] = new Array(Fs);
-    const k: number = Fs / this.Fs;
-    for (let i = 0; i < r.length; i++) {
-      r[i] = this._signal[Math.floor(i / k)];
-    }
-
-    return r;
-  }
-
-  /**
-   * Samples the signal at the given frequency lower than the
-   * original frequency.
-   *
-   * @private
-   * @param {number} Fs Sampling frequency
-   * @returns {number[]} Sampled signal array
-   * @memberof Signal
-   */
-  private _sampleLess(Fs: number): number[] {
-    // Get the number of samples in each division of the current array
-    // to be represented by one sample in the new array
     const k: number = this.Fs / Fs;
-    // Get the sample in the middle of the division, favoring the
-    // earlier sample in the event of an even-length division
-    return this._signal.filter((x, i) => (i + Math.floor(k / 2) + 1) % k === 0);
+
+    return Fs < this.Fs
+      ? // Samples the signal at the given frequency lower than the
+        // original frequency.
+        // Get the sample in the middle of the division, favoring the
+        // earlier sample in the event of an even-length division
+        this._signal.filter((x, i) => (i + Math.floor(k / 2) + 1) % k === 0)
+      : // Samples the signal at the given frequency higher than the
+        // original frequency.
+        // Repeat each sample in array for every sample in the each division
+        r.map((x, i) => this._signal[Math.floor(i * k)]);
   }
 
   /**

@@ -48,28 +48,18 @@ export declare class Signal {
      * @memberof Signal
      */
     setSignalValue(index: number, value: number): void;
+    /**
+     * Returns the signal sampled at the given frequency. If the new
+     * sampling frequency is higher than the current signal sampling
+     * frequency, it must be a multiple of the current signal sampling
+     * frequency. If it is lower, it must be a factor of the current
+     * signal sampling frequency.
+     *
+     * @param {number} Fs New sampling frequency
+     * @returns {number[]} Sampled signal array
+     * @memberof Signal
+     */
     sample(Fs: number): number[];
-    /**
-     * Samples the signal at the given frequency higher than the
-     * original frequency. For accuracy, the new sampling frequency must
-     * be a multiple of the original signal sampling frequency.
-     *
-     * @private
-     * @param {number} Fs Sampling frequency
-     * @returns {number[]} Sampled signal array
-     * @memberof Signal
-     */
-    private _sampleMore;
-    /**
-     * Samples the signal at the given frequency lower than the
-     * original frequency.
-     *
-     * @private
-     * @param {number} Fs Sampling frequency
-     * @returns {number[]} Sampled signal array
-     * @memberof Signal
-     */
-    private _sampleLess;
     /**
      * Returns the frequency magnitude response of the signal
      *

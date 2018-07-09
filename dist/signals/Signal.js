@@ -85,51 +85,41 @@ var Signal = /** @class */ (function () {
     Signal.prototype.setSignalValue = function (index, value) {
         this._signal[index] = value;
     };
+    /**
+     * Returns the signal sampled at the given frequency. If the new
+     * sampling frequency is higher than the current signal sampling
+     * frequency, it must be a multiple of the current signal sampling
+     * frequency. If it is lower, it must be a factor of the current
+     * signal sampling frequency.
+     *
+     * @param {number} Fs New sampling frequency
+     * @returns {number[]} Sampled signal array
+     * @memberof Signal
+     */
     Signal.prototype.sample = function (Fs) {
+        var _this = this;
         if (Fs < this.Fs && this.Fs % Fs !== 0) {
             throw new Error('The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.');
         }
         if (Fs > this.Fs && Fs % this.Fs !== 0) {
             throw new Error('The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.');
         }
-        return Fs < this.Fs
-            ? this._sampleLess(Fs)
-            : this._sampleMore(Fs);
-    };
-    /**
-     * Samples the signal at the given frequency higher than the
-     * original frequency. For accuracy, the new sampling frequency must
-     * be a multiple of the original signal sampling frequency.
-     *
-     * @private
-     * @param {number} Fs Sampling frequency
-     * @returns {number[]} Sampled signal array
-     * @memberof Signal
-     */
-    Signal.prototype._sampleMore = function (Fs) {
-        var r = new Array(Fs);
-        var k = Fs / this.Fs;
-        for (var i = 0; i < r.length; i++) {
-            r[i] = this._signal[Math.floor(i / k)];
-        }
-        return r;
-    };
-    /**
-     * Samples the signal at the given frequency lower than the
-     * original frequency.
-     *
-     * @private
-     * @param {number} Fs Sampling frequency
-     * @returns {number[]} Sampled signal array
-     * @memberof Signal
-     */
-    Signal.prototype._sampleLess = function (Fs) {
-        // Get the number of samples in each division of the current array
-        // to be represented by one sample in the new array
+        // Initialize array with zeros for mapping
+        var r = new Array(Fs + 1)
+            .join('0')
+            .split('')
+            .map(parseFloat);
         var k = this.Fs / Fs;
-        // Get the sample in the middle of the division, favoring the
-        // earlier sample in the event of an even-length division
-        return this._signal.filter(function (x, i) { return (i + Math.floor(k / 2) + 1) % k === 0; });
+        return Fs < this.Fs
+            ? // Samples the signal at the given frequency lower than the
+                // original frequency.
+                // Get the sample in the middle of the division, favoring the
+                // earlier sample in the event of an even-length division
+                this._signal.filter(function (x, i) { return (i + Math.floor(k / 2) + 1) % k === 0; })
+            : // Samples the signal at the given frequency higher than the
+                // original frequency.
+                // Repeat each sample in array for every sample in the each division
+                r.map(function (x, i) { return _this._signal[Math.floor(i * k)]; });
     };
     /**
      * Returns the frequency magnitude response of the signal
