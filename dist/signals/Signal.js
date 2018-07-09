@@ -102,8 +102,8 @@ var Signal = /** @class */ (function () {
         if (numThresh > this.signal.length) {
             throw new Error('Number of thresholds must be less than number of samples');
         }
-        var thresholds = [];
-        var points = [];
+        var thresholds = new Array(numThresh);
+        var points = new Array(numThresh);
         // Get threshold points
         var beginning = Math.ceil(Math.floor(this.signal.length / numThresh / 2) - 1);
         var width = Math.ceil(Math.floor(this.signal.length / numThresh));
@@ -127,7 +127,7 @@ var Signal = /** @class */ (function () {
         if (isNaN(this._signal[0])) {
             throw new Error('Please add a signal array first');
         }
-        if (!this.isRadix2(this._signal.length)) {
+        if (!__1.FFT.isRadix2(this._signal.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }
         // Convert signal to complex array
@@ -145,13 +145,6 @@ var Signal = /** @class */ (function () {
             .slice(0, twoSSpectrum.length / 2 + 1)
             .map(function (x, i, arr) { return (i === 0 || i === arr.length - 1 ? x : x * 2); });
         return sinSSpectrum;
-    };
-    Signal.prototype.isRadix2 = function (n) {
-        if (n <= 0 || n % 2 !== 0)
-            return false;
-        if (n === 2)
-            return true;
-        return this.isRadix2(n / 2);
     };
     return Signal;
 }());

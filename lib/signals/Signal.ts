@@ -106,8 +106,8 @@ export class Signal {
       );
     }
 
-    const thresholds: number[] = [];
-    const points: number[] = [];
+    const thresholds: number[] = new Array(numThresh);
+    const points: number[] = new Array(numThresh);
 
     // Get threshold points
     const beginning = Math.ceil(
@@ -139,7 +139,7 @@ export class Signal {
       throw new Error('Please add a signal array first');
     }
 
-    if (!this.isRadix2(this._signal.length)) {
+    if (!FFT.isRadix2(this._signal.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }
 
@@ -162,11 +162,5 @@ export class Signal {
       .map((x, i, arr) => (i === 0 || i === arr.length - 1 ? x : x * 2));
 
     return sinSSpectrum;
-  }
-
-  public isRadix2(n: number): boolean {
-    if (n <= 0 || n % 2 !== 0) return false;
-    if (n === 2) return true;
-    return this.isRadix2(n / 2);
   }
 }

@@ -43,4 +43,5 @@ export declare class FFT {
      * @memberof FFT
      */
     convolve(x: math.Complex[], y: math.Complex[]): math.Complex[];
+    static isRadix2(n: number): boolean;
 }

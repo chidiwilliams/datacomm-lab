@@ -65,5 +65,4 @@ export declare class Signal {
      * @memberof Signal
      */
     getFrequencyResponse(): number[];
-    isRadix2(n: number): boolean;
 }
