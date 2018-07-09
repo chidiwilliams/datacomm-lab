@@ -1,5 +1,4 @@
 export { Signal } from './signals/Signal';
-export { CarrierSignal } from './signals/CarrierSignal';
 export { WaveSignal, WaveSignalType } from './signals/WaveSignal';
 export { BPSK } from './modulations/BPSK';
 export { AWGN } from './impairments/AWGN';

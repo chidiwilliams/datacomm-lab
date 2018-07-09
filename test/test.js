@@ -21,9 +21,7 @@ describe('Signal functions', () => {
   it('should compute the Frequency magnitude response', () => Signal.fRes());
 });
 
-// Complex Signal
-
-// Carrier Signal
+// Wave Signal
 
 // Utilities
 

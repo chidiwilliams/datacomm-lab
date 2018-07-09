@@ -3,8 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // Signals
 var Signal_1 = require("./signals/Signal");
 exports.Signal = Signal_1.Signal;
-var CarrierSignal_1 = require("./signals/CarrierSignal");
-exports.CarrierSignal = CarrierSignal_1.CarrierSignal;
 var WaveSignal_1 = require("./signals/WaveSignal");
 exports.WaveSignal = WaveSignal_1.WaveSignal;
 exports.WaveSignalType = WaveSignal_1.WaveSignalType;
