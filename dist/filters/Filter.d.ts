@@ -10,7 +10,7 @@ export declare class Filter {
     private _m_Fu;
     private _m_phi;
     private static MAX_NUM_FILTER_TAPS;
-    constructor(filt_t: FilterType, num_taps: number, Fs: number, Fn: number | FilterFreq);
+    constructor(filt_t: FilterType, num_taps: number, Fs: number, Fx: number | FilterFreq);
     private designLPF;
     private designHPF;
     private designBPF;

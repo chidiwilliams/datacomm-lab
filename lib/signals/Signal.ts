@@ -1,5 +1,5 @@
 import * as math from 'mathjs';
-import { FFT } from '../';
+import { Functions } from '../';
 
 /**
  *
@@ -129,7 +129,7 @@ export class Signal {
    * @memberof Signal
    */
   public getFrequencyResponse() {
-    if (!FFT.isRadix2(this._signal.length)) {
+    if (!Functions.isRadix2(this._signal.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }
 
@@ -137,7 +137,7 @@ export class Signal {
     const comp: math.Complex[] = this._signal.map((x) => math.complex(x, 0));
 
     // Compute FFT
-    const sigFFT: math.Complex[] = new FFT().fft(comp);
+    const sigFFT: math.Complex[] = Functions.fft(comp);
 
     // Compute two-sided spectrum
     const twoSSpectrum: number[] = new Array(this.signal.length);

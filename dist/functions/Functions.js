@@ -14,8 +14,8 @@ var math = __importStar(require("mathjs"));
  * @export
  * @class FFT
  */
-var FFT = /** @class */ (function () {
-    function FFT() {
+var Functions = /** @class */ (function () {
+    function Functions() {
     }
     /**
      * Computes the Fast Fourier Transform of a signal
@@ -25,12 +25,12 @@ var FFT = /** @class */ (function () {
      * @returns {math.Complex[]} Signal in frequency-domain
      * @memberof FFT
      */
-    FFT.prototype.fft = function (x) {
+    Functions.fft = function (x) {
         // Base case
         if (x.length === 1) {
             return [x[0]];
         }
-        if (!FFT.isRadix2(x.length)) {
+        if (!Functions.isRadix2(x.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }
         // FFT of even terms
@@ -63,8 +63,8 @@ var FFT = /** @class */ (function () {
      * @returns {math.Complex[]} Signal in time-domain
      * @memberof FFT
      */
-    FFT.prototype.ifft = function (x) {
-        if (!FFT.isRadix2(x.length)) {
+    Functions.ifft = function (x) {
+        if (!Functions.isRadix2(x.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }
         // Take conjugate
@@ -87,11 +87,11 @@ var FFT = /** @class */ (function () {
      * @returns {math.Complex[]} Circular convolution result
      * @memberof FFT
      */
-    FFT.prototype.cconvolve = function (x, y) {
+    Functions.cconvolve = function (x, y) {
         if (x.length !== y.length) {
             throw new Error('Arrays must have equal lengths.');
         }
-        if (!FFT.isRadix2(x.length) || !FFT.isRadix2(y.length)) {
+        if (!Functions.isRadix2(x.length) || !Functions.isRadix2(y.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }
         // Compute FFT of each sequence
@@ -113,11 +113,11 @@ var FFT = /** @class */ (function () {
      * @returns {math.Complex[]} Convolution result
      * @memberof FFT
      */
-    FFT.prototype.convolve = function (x, y) {
+    Functions.convolve = function (x, y) {
         if (x.length !== y.length) {
             throw new Error('Arrays must have equal lengths.');
         }
-        if (!FFT.isRadix2(x.length) || !FFT.isRadix2(y.length)) {
+        if (!Functions.isRadix2(x.length) || !Functions.isRadix2(y.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }
         var ZERO = math.complex(0, 0);
@@ -131,15 +131,31 @@ var FFT = /** @class */ (function () {
         for (var i = y.length; i < 2 * y.length; i++) {
             b[i] = ZERO;
         }
-        return this.cconvolve(a, b);
+        return Functions.cconvolve(a, b);
     };
-    FFT.isRadix2 = function (n) {
+    Functions.isRadix2 = function (n) {
         if (n <= 0 || n % 2 !== 0)
             return false;
         if (n === 2)
             return true;
-        return FFT.isRadix2(n / 2);
+        return Functions.isRadix2(n / 2);
     };
-    return FFT;
+    Functions.add = function (x) {
+        for (var i = 0; i < x.length - 1; i++) {
+            if (x[i].length !== x[i + 1].length) {
+                throw new Error('Arrays must have equal lengths.');
+            }
+        }
+        var y = new Array(x[0].length);
+        for (var i = 0; i < y.length; i++) {
+            var sum = 0;
+            for (var j = 0; j < x.length; j++) {
+                sum += x[j][i];
+            }
+            y[i] = sum;
+        }
+        return y;
+    };
+    return Functions;
 }());
-exports.FFT = FFT;
+exports.Functions = Functions;

@@ -18,7 +18,7 @@ export class Filter {
     filt_t: FilterType,
     num_taps: number,
     Fs: number,
-    Fn: number | FilterFreq
+    Fx: number | FilterFreq
   ) {
     this._m_error_flag = 0;
     this._m_filt_t = filt_t;
@@ -39,25 +39,25 @@ export class Filter {
     }
 
     if (filt_t === FilterType.LPF || filt_t === FilterType.HPF) {
-      if (typeof Fn === 'object') {
+      if (typeof Fx === 'object') {
         // TODO: Flag appropriately
         return;
       }
 
-      if (Fn <= 0 || Fn >= Fs / 2) {
+      if (Fx <= 0 || Fx >= Fs / 2) {
         this._m_error_flag = -2;
         return;
       }
 
-      this._m_Fx = Fn;
-      this._m_lambda = (Math.PI * Fn) / (Fs / 2);
+      this._m_Fx = Fx;
+      this._m_lambda = (Math.PI * Fx) / (Fs / 2);
     } else {
-      if (typeof Fn === 'number') {
+      if (typeof Fx === 'number') {
         // TODO: Flag appropriately
         return;
       }
 
-      if (Fn.Fl <= 0 || Fn.Fl >= Fs / 2 || Fn.Fu <= 0 || Fn.Fu >= Fs / 2) {
+      if (Fx.Fl <= 0 || Fx.Fl >= Fs / 2 || Fx.Fu <= 0 || Fx.Fu >= Fs / 2) {
         this._m_error_flag = -2;
         return;
       }
@@ -65,10 +65,10 @@ export class Filter {
       // Check if array has only two elements
       // Check if elem1 < elem2
 
-      this._m_Fx = Fn.Fl;
-      this._m_Fu = Fn.Fu;
-      this._m_lambda = (Math.PI * Fn.Fl) / (Fs / 2);
-      this._m_phi = (Math.PI * Fn.Fu) / (Fs / 2);
+      this._m_Fx = Fx.Fl;
+      this._m_Fu = Fx.Fu;
+      this._m_lambda = (Math.PI * Fx.Fl) / (Fs / 2);
+      this._m_phi = (Math.PI * Fx.Fu) / (Fs / 2);
     }
 
     // Initialize shift registers

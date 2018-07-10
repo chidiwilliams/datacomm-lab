@@ -1,5 +1,5 @@
 'use strict';
-const FFT = require('./transforms/FFT');
+const Functions = require('./functions/Functions');
 const Hamming4 = require('./codecs/Hamming4');
 const AWGN = require('./impairments/AWGN');
 const Signal = require('./signals/Signal');
@@ -90,20 +90,20 @@ describe('BPSK functions', () => {
 
 // FFT
 describe('FFT functions', () => {
-  it('should perform FFT', () => FFT.fft());
+  it('should perform FFT', () => Functions.fft());
   it('should not perform FFT if array length is not a power of 2', () =>
-    FFT.rejectFFTForNonPow2ArrLen());
-  it('should perform IFFT', () => FFT.ifft());
+    Functions.rejectFFTForNonPow2ArrLen());
+  it('should perform IFFT', () => Functions.ifft());
   it('should not perform IFFT if array length is not a power of 2', () =>
-    FFT.rejectIFFTForNonPow2ArrLen());
-  it('should perform Circular Convolution', () => FFT.cconvolve());
+    Functions.rejectIFFTForNonPow2ArrLen());
+  it('should perform Circular Convolution', () => Functions.cconvolve());
   it('should not perform Circular Convolution if the sampling frequency of the signals is not a power of 2', () =>
-    FFT.rejectCConvolveForNonPow2ArrLen());
+    Functions.rejectCConvolveForNonPow2ArrLen());
   it('should not perform Circular Convolution of two arrays of different lengths', () =>
-    FFT.rejectCConvolveForLengthMismatch());
-  it('should perform Convolution', () => FFT.convolve());
+    Functions.rejectCConvolveForLengthMismatch());
+  it('should perform Convolution', () => Functions.convolve());
   it('should not perform Convolution if the sampling frequency of the signals is not a power of 2', () =>
-    FFT.rejectConvolveForNonPow2ArrLen());
+    Functions.rejectConvolveForNonPow2ArrLen());
   it('should not perform Convolution of two arrays of different lengths', () =>
-    FFT.rejectConvolveForLengthMismatch());
+    Functions.rejectConvolveForLengthMismatch());
 });

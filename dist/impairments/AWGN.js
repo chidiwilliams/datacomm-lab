@@ -12,25 +12,27 @@ var AWGN = /** @class */ (function () {
     /**
      * Get the noise array
      *
+     * @static
      * @param {number} numSamples
-     * @param {number} [amp]
      * @returns {number[]}
      * @memberof AWGN
      */
-    AWGN.prototype.generate = function (numSamples) {
+    AWGN.generate = function (numSamples) {
         var n = new Array(numSamples);
         for (var i = 0; i < n.length; i++) {
-            n[i] = this.next();
+            n[i] = AWGN._next();
         }
         return n;
     };
     /**
      * Generates new Gaussian random number
      *
+     * @private
+     * @static
      * @returns {number}
      * @memberof AWGN
      */
-    AWGN.prototype.next = function () {
+    AWGN._next = function () {
         var u = 0;
         var v = 0;
         while (u === 0)
