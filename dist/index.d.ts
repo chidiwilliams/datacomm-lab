@@ -1,6 +1,5 @@
 export { Signal } from './signals/Signal';
-export { ComplexSignal } from './signals/ComplexSignal';
-export { CarrierSignal } from './signals/CarrierSignal';
+export { WaveSignal, WaveSignalType } from './signals/WaveSignal';
 export { BPSK } from './modulations/BPSK';
 export { AWGN } from './impairments/AWGN';
 export { Hamming4 } from './codecs/Hamming4';

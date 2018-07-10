@@ -13,12 +13,10 @@ export class AWGN {
    * @returns {number[]}
    * @memberof AWGN
    */
-  public generate(numSamples: number, amp?: number): number[] {
-    amp = amp || 1;
-
+  public generate(numSamples: number): number[] {
     const n = new Array(numSamples);
     for (let i = 0; i < n.length; i++) {
-      n[i] = this.next() * amp;
+      n[i] = this.next();
     }
 
     return n;

@@ -25,6 +25,14 @@ export declare class Signal {
     */
     signal: number[];
     /**
+     * Get the sampling frequency given as the length of the signal
+     *
+     * @readonly
+     * @type {number}
+     * @memberof Signal
+     */
+    readonly Fs: number;
+    /**
      * Get the value of the signal at a sample value
      *
      * @param {number} index
@@ -41,33 +49,17 @@ export declare class Signal {
      */
     setSignalValue(index: number, value: number): void;
     /**
-     * Prints the signal array to console.
-     * Setting `numbering` to true prepends 1., 2., 3., etc.
-     * to the array values.
-     *
-     * @param {string} header
-     * @param {boolean} [numbering]
-     * @memberof Signal
-     */
-    print(header: string, numbering?: boolean): void;
-    /**
-     * Samples the signal at the given frequency. For accuracy,
-     * the sampling frequency must be a factor of the original
+     * Returns the signal sampled at the given frequency. If the new
+     * sampling frequency is higher than the current signal sampling
+     * frequency, it must be a multiple of the current signal sampling
+     * frequency. If it is lower, it must be a factor of the current
      * signal sampling frequency.
      *
-     * @param {number} Fs Sampling frequency
+     * @param {number} Fs New sampling frequency
      * @returns {number[]} Sampled signal array
      * @memberof Signal
      */
     sample(Fs: number): number[];
-    /**
-     * Returns the threshold values per numThresh divisions of the array
-     *
-     * @param {number} numThresh
-     * @returns {number[]}
-     * @memberof Signal
-     */
-    getThresholds(numThresh: number): number[];
     /**
      * Returns the frequency magnitude response of the signal
      *

@@ -6,6 +6,7 @@
  */
 export declare class BPSK {
     private _baseband;
+    private _basebandPShifted;
     private _carrier;
     private _modulated;
     private _demodulated;
@@ -20,12 +21,13 @@ export declare class BPSK {
      * Returns an array whose individual elements are the products
      * of the individual elements of the received arrays
      *
+     * @private
      * @param {number[]} a
      * @param {number[]} b
      * @returns {number[]}
      * @memberof BPSK
      */
-    multArrays(a: number[], b: number[]): number[];
+    private _multArrays;
     /**
      * Get modulated signal array
      *

@@ -1,4 +1,3 @@
-'use strict';
 const expect = require('chai').expect;
 const math = require('mathjs');
 const lab = require('../../dist');
@@ -19,6 +18,13 @@ const fft = () => {
   ]);
 };
 
+const rejectFFTForNonPow2ArrLen = () => {
+  const fft = new lab.FFT();
+  expect(() => fft.fft([1, 0, 1, 0, 1])).to.throw(
+    'Signal sampling frequency must be a power of 2.'
+  );
+};
+
 const ifft = () => {
   const t = new lab.FFT().ifft([
     math.complex(8, 0),
@@ -35,6 +41,13 @@ const ifft = () => {
   ]);
 };
 
+const rejectIFFTForNonPow2ArrLen = () => {
+  const fft = new lab.FFT();
+  expect(() => fft.ifft([1, 0, 1, 0, 1])).to.throw(
+    'Signal sampling frequency must be a power of 2.'
+  );
+};
+
 const cconvolve = () => {
   const c = new lab.FFT().cconvolve([2, 2, 2, 2], [2, 2, 2, 2]);
 
@@ -44,6 +57,20 @@ const cconvolve = () => {
     math.complex(16, 0),
     math.complex(16, 0),
   ]);
+};
+
+const rejectCConvolveForNonPow2ArrLen = () => {
+  const fft = new lab.FFT();
+  expect(() => fft.cconvolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])).to.throw(
+    'Signal sampling frequency must be a power of 2.'
+  );
+};
+
+const rejectCConvolveForLengthMismatch = () => {
+  const fft = new lab.FFT();
+  expect(() => fft.cconvolve([1, 0, 1], [0, 1])).to.throw(
+    'Arrays must have equal lengths.'
+  );
 };
 
 const convolve = () => {
@@ -57,9 +84,29 @@ const convolve = () => {
   ]);
 };
 
+const rejectConvolveForNonPow2ArrLen = () => {
+  const fft = new lab.FFT();
+  expect(() => fft.convolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])).to.throw(
+    'Signal sampling frequency must be a power of 2.'
+  );
+};
+
+const rejectConvolveForLengthMismatch = () => {
+  const fft = new lab.FFT();
+  expect(() => fft.convolve([1, 0, 1], [0, 1])).to.throw(
+    'Arrays must have equal lengths.'
+  );
+};
+
 module.exports = {
   fft,
+  rejectFFTForNonPow2ArrLen,
   ifft,
+  rejectIFFTForNonPow2ArrLen,
   cconvolve,
+  rejectCConvolveForNonPow2ArrLen,
+  rejectCConvolveForLengthMismatch,
   convolve,
+  rejectConvolveForNonPow2ArrLen,
+  rejectConvolveForLengthMismatch,
 };

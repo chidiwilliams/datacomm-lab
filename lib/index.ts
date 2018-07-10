@@ -1,7 +1,6 @@
 // Signals
 export { Signal } from './signals/Signal';
-export { ComplexSignal } from './signals/ComplexSignal';
-export { CarrierSignal } from './signals/CarrierSignal';
+export { WaveSignal, WaveSignalType } from './signals/WaveSignal';
 
 // Modulation Schemes
 export { BPSK } from './modulations/BPSK';
@@ -15,5 +14,5 @@ export { Hamming4 } from './codecs/Hamming4';
 // Filters
 export { Filter, FilterType } from './filters/Filter';
 
-// Utilities
+// Transforms
 export { FFT } from './transforms/FFT';

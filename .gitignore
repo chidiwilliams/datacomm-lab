@@ -1,4 +1,4 @@
 node_modules/
-.vscode/
 /tester.js
-.nyc_output/
+.*/
+coverage/

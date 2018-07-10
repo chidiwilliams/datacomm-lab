@@ -8,7 +8,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var math = __importStar(require("mathjs"));
-var FFT_1 = require("../transforms/FFT");
+var __1 = require("../");
 /**
  *
  *
@@ -22,10 +22,10 @@ var Signal = /** @class */ (function () {
      * @memberof Signal
      */
     function Signal(Fs) {
-        this._signal = new Array(Fs + 1)
-            .join('0')
-            .split('')
-            .map(parseFloat);
+        this._signal = new Array(Fs);
+        for (var i = 0; i < Fs; i++) {
+            this._signal[i] = 0;
+        }
     }
     Object.defineProperty(Signal.prototype, "signal", {
         /**
@@ -44,9 +44,23 @@ var Signal = /** @class */ (function () {
          */
         set: function (signal) {
             if (signal.length !== this._signal.length) {
-                throw new Error('Invalid signal length');
+                throw new Error('Invalid signal length.');
             }
             this._signal = signal;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Signal.prototype, "Fs", {
+        /**
+         * Get the sampling frequency given as the length of the signal
+         *
+         * @readonly
+         * @type {number}
+         * @memberof Signal
+         */
+        get: function () {
+            return this._signal.length;
         },
         enumerable: true,
         configurable: true
@@ -72,71 +86,40 @@ var Signal = /** @class */ (function () {
         this._signal[index] = value;
     };
     /**
-     * Prints the signal array to console.
-     * Setting `numbering` to true prepends 1., 2., 3., etc.
-     * to the array values.
-     *
-     * @param {string} header
-     * @param {boolean} [numbering]
-     * @memberof Signal
-     */
-    Signal.prototype.print = function (header, numbering) {
-        console.log(header);
-        for (var i = 0; i < this.signal.length; i++) {
-            var value = this.signal[i];
-            if (numbering === true) {
-                console.log(i + ". " + value);
-            }
-            else {
-                console.log(value);
-            }
-        }
-    };
-    /**
-     * Samples the signal at the given frequency. For accuracy,
-     * the sampling frequency must be a factor of the original
+     * Returns the signal sampled at the given frequency. If the new
+     * sampling frequency is higher than the current signal sampling
+     * frequency, it must be a multiple of the current signal sampling
+     * frequency. If it is lower, it must be a factor of the current
      * signal sampling frequency.
      *
-     * @param {number} Fs Sampling frequency
+     * @param {number} Fs New sampling frequency
      * @returns {number[]} Sampled signal array
      * @memberof Signal
      */
     Signal.prototype.sample = function (Fs) {
-        if (Fs % this._signal.length !== 0) {
-            throw new Error('New sampling frequency must be a multiple of the previous sampling frequency');
+        var _this = this;
+        if (Fs < this.Fs && this.Fs % Fs !== 0) {
+            throw new Error('The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.');
         }
-        var r = new Array(Fs);
-        var fact = Fs / this._signal.length;
-        for (var i = 0; i < r.length; i++) {
-            r[i] = this._signal[Math.floor(i / fact)];
+        if (Fs > this.Fs && Fs % this.Fs !== 0) {
+            throw new Error('The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.');
         }
-        return r;
-    };
-    /**
-     * Returns the threshold values per numThresh divisions of the array
-     *
-     * @param {number} numThresh
-     * @returns {number[]}
-     * @memberof Signal
-     */
-    Signal.prototype.getThresholds = function (numThresh) {
-        if (numThresh > this.signal.length) {
-            throw new Error('Number of thresholds must be less than number of samples');
-        }
-        var thresholds = [];
-        var points = [];
-        // Get threshold points
-        var beginning = Math.ceil(Math.floor(this.signal.length / numThresh / 2) - 1);
-        var width = Math.ceil(Math.floor(this.signal.length / numThresh));
-        for (var i = 0; i < numThresh; i++) {
-            points[i] = width * i + beginning;
-        }
-        // Get thresholds
-        for (var i = 0; i < numThresh; i++) {
-            var point = points[i];
-            thresholds[i] = this.signal[point] > 0 ? 1 : 0;
-        }
-        return thresholds;
+        // Initialize array with zeros for mapping
+        var r = new Array(Fs + 1)
+            .join('0')
+            .split('')
+            .map(parseFloat);
+        var k = this.Fs / Fs;
+        return Fs < this.Fs
+            ? // Samples the signal at the given frequency lower than the
+                // original frequency.
+                // Get the sample in the middle of the division, favoring the
+                // earlier sample in the event of an even-length division
+                this._signal.filter(function (x, i) { return (i + Math.floor(k / 2) + 1) % k === 0; })
+            : // Samples the signal at the given frequency higher than the
+                // original frequency.
+                // Repeat each sample in array for every sample in the each division
+                r.map(function (x, i) { return _this._signal[Math.floor(i * k)]; });
     };
     /**
      * Returns the frequency magnitude response of the signal
@@ -145,13 +128,13 @@ var Signal = /** @class */ (function () {
      * @memberof Signal
      */
     Signal.prototype.getFrequencyResponse = function () {
-        if (isNaN(this._signal[0])) {
-            throw new Error('Please add a signal array first');
+        if (!__1.FFT.isRadix2(this._signal.length)) {
+            throw new Error('Signal sampling frequency must be a power of 2.');
         }
         // Convert signal to complex array
         var comp = this._signal.map(function (x) { return math.complex(x, 0); });
         // Compute FFT
-        var sigFFT = new FFT_1.FFT().fft(comp);
+        var sigFFT = new __1.FFT().fft(comp);
         // Compute two-sided spectrum
         var twoSSpectrum = new Array(this.signal.length);
         for (var i = 0; i < twoSSpectrum.length; i++) {
