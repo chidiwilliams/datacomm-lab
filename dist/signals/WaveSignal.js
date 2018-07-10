@@ -45,6 +45,39 @@ var WaveSignal = /** @class */ (function (_super) {
         return _this;
     }
     /**
+     * Generates a sine wave signal
+     *
+     * @private
+     * @returns {number[]} Samples
+     * @memberof WaveSignal
+     */
+    WaveSignal.prototype._generateSine = function () {
+        var carr = new Array(this.Fs);
+        for (var i = 0; i < this.Fs; i++) {
+            carr[i] = Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi);
+        }
+        return carr;
+    };
+    /**
+     * Generates a square wave signal
+     *
+     * @private
+     * @returns {number[]} Samples
+     * @memberof WaveSignal
+     */
+    WaveSignal.prototype._generateSquare = function () {
+        var carr = new Array(this.Fs);
+        for (var i = 0; i < this._Fa; i++) {
+            // Divide the samples by the number of repeating signal units (frequency, Fa)
+            var k = this.Fs / this._Fa;
+            // For each division, from start to half of the frequency limit, put 1s, while the other half samples remain zeros
+            for (var j = Math.ceil(k * i); j < Math.ceil(k * (i + 0.5)); j++) {
+                carr[j] = 1;
+            }
+        }
+        return carr;
+    };
+    /**
      * Generates a triangular wave signal
      *
      * @private
@@ -78,39 +111,6 @@ var WaveSignal = /** @class */ (function (_super) {
             for (var j = sample1 + halfRange + quarterRange; j < sample1 + range; j++) {
                 carr[j] = (j - (sample1 + halfRange + quarterRange)) / quarterRange - 1;
             }
-        }
-        return carr;
-    };
-    /**
-     * Generates a square wave signal
-     *
-     * @private
-     * @returns {number[]} Samples
-     * @memberof WaveSignal
-     */
-    WaveSignal.prototype._generateSquare = function () {
-        var carr = new Array(this.Fs);
-        for (var i = 0; i < this._Fa; i++) {
-            // Divide the samples by the number of repeating signal units (frequency, Fa)
-            var k = this.Fs / this._Fa;
-            // For each division, from start to half of the frequency limit, put 1s, while the other half samples remain zeros
-            for (var j = Math.ceil(k * i); j < Math.ceil(k * (i + 0.5)); j++) {
-                carr[j] = 1;
-            }
-        }
-        return carr;
-    };
-    /**
-     * Generates a sine wave signal
-     *
-     * @private
-     * @returns {number[]} Samples
-     * @memberof WaveSignal
-     */
-    WaveSignal.prototype._generateSine = function () {
-        var carr = new Array(this.Fs);
-        for (var i = 0; i < this.Fs; i++) {
-            carr[i] = Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi);
         }
         return carr;
     };

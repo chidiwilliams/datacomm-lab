@@ -19,13 +19,13 @@ export declare class WaveSignal extends Signal {
      */
     constructor(type: WaveSignalType, Fs: number, Fa: number, phi?: number);
     /**
-     * Generates a triangular wave signal
+     * Generates a sine wave signal
      *
      * @private
      * @returns {number[]} Samples
      * @memberof WaveSignal
      */
-    private _generateTriangular;
+    private _generateSine;
     /**
      * Generates a square wave signal
      *
@@ -35,13 +35,13 @@ export declare class WaveSignal extends Signal {
      */
     private _generateSquare;
     /**
-     * Generates a sine wave signal
+     * Generates a triangular wave signal
      *
      * @private
      * @returns {number[]} Samples
      * @memberof WaveSignal
      */
-    private _generateSine;
+    private _generateTriangular;
 }
 export declare enum WaveSignalType {
     'SINE' = 0,

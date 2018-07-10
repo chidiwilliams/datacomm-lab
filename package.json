@@ -8,7 +8,7 @@
     "rebuild": "rm './dist/' -rf && tsc",
     "build": "tsc",
     "test": "mocha --reporter spec",
-    "test-coverage": "nyc --check-coverage --lines 70 npm test"
+    "test-coverage": "nyc --check-coverage --lines 75 npm test"
   },
   "pre-commit": [
     "rebuild",

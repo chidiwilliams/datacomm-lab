@@ -69,28 +69,15 @@ const rejectSampleHigherForNonMultFreq = () => {
 };
 
 const fRes = () => {
-  // Generate sine wave with frequency of 4
-  const res = new lab.WaveSignal(
-    lab.WaveSignalType.SINE,
-    16,
-    4
-  ).getFrequencyResponse();
+  const sig = new lab.Signal(8);
+  sig.signal = [0, 1, 0, 1, 0, 1, 0, 1];
 
-  // Every frequency except 4 must have magnitude of zero
-  res
-    .slice(0, 4)
-    .concat(res.slice(5))
-    .forEach((x, i, a) => {
-      expect(mth.equal(x, 0)).to.be.true;
-    });
-
-  // Frequency 4 must have magnitude of 1
-  expect(mth.equal(res[4], 1)).to.be.true;
+  expect(sig.getFrequencyResponse()).to.eql([0.5, 0, 0, 0, 0.5]);
 };
 
 const rejectFResForNonPow2Fs = () => {
-  // Generate sine wave with Fs = 21
-  const sig = new lab.WaveSignal(lab.WaveSignalType.SINE, 21, 4);
+  const sig = new lab.Signal(9);
+  sig.signal = [0, 1, 0, 1, 0, 1, 0, 1, 0];
 
   expect(() => sig.getFrequencyResponse()).to.throw(
     'Signal sampling frequency must be a power of 2.'

@@ -40,6 +40,41 @@ export class WaveSignal extends Signal {
   }
 
   /**
+   * Generates a sine wave signal
+   *
+   * @private
+   * @returns {number[]} Samples
+   * @memberof WaveSignal
+   */
+  private _generateSine(): number[] {
+    const carr: number[] = new Array(this.Fs);
+    for (let i = 0; i < this.Fs; i++) {
+      carr[i] = Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi);
+    }
+    return carr;
+  }
+
+  /**
+   * Generates a square wave signal
+   *
+   * @private
+   * @returns {number[]} Samples
+   * @memberof WaveSignal
+   */
+  private _generateSquare(): number[] {
+    const carr: number[] = new Array(this.Fs);
+    for (let i = 0; i < this._Fa; i++) {
+      // Divide the samples by the number of repeating signal units (frequency, Fa)
+      const k: number = this.Fs / this._Fa;
+      // For each division, from start to half of the frequency limit, put 1s, while the other half samples remain zeros
+      for (let j = Math.ceil(k * i); j < Math.ceil(k * (i + 0.5)); j++) {
+        carr[j] = 1;
+      }
+    }
+    return carr;
+  }
+
+  /**
    * Generates a triangular wave signal
    *
    * @private
@@ -81,41 +116,6 @@ export class WaveSignal extends Signal {
       ) {
         carr[j] = (j - (sample1 + halfRange + quarterRange)) / quarterRange - 1;
       }
-    }
-    return carr;
-  }
-
-  /**
-   * Generates a square wave signal
-   *
-   * @private
-   * @returns {number[]} Samples
-   * @memberof WaveSignal
-   */
-  private _generateSquare(): number[] {
-    const carr: number[] = new Array(this.Fs);
-    for (let i = 0; i < this._Fa; i++) {
-      // Divide the samples by the number of repeating signal units (frequency, Fa)
-      const k: number = this.Fs / this._Fa;
-      // For each division, from start to half of the frequency limit, put 1s, while the other half samples remain zeros
-      for (let j = Math.ceil(k * i); j < Math.ceil(k * (i + 0.5)); j++) {
-        carr[j] = 1;
-      }
-    }
-    return carr;
-  }
-
-  /**
-   * Generates a sine wave signal
-   *
-   * @private
-   * @returns {number[]} Samples
-   * @memberof WaveSignal
-   */
-  private _generateSine(): number[] {
-    const carr: number[] = new Array(this.Fs);
-    for (let i = 0; i < this.Fs; i++) {
-      carr[i] = Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi);
     }
     return carr;
   }

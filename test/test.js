@@ -3,6 +3,7 @@ const FFT = require('./transforms/FFT');
 const Hamming4 = require('./codecs/Hamming4');
 const AWGN = require('./impairments/AWGN');
 const Signal = require('./signals/Signal');
+const WaveSignal = require('./signals/WaveSignal');
 const BPSK = require('./modulations/BPSK');
 
 // Signals
@@ -31,8 +32,13 @@ describe('Signal functions', () => {
 });
 
 // Wave Signal
-
-// Utilities
+describe('Wave signal functions', () => {
+  it('should generate a signal with a frequency greater than or equal to half its sampling frequency', () =>
+    WaveSignal.rejectGenForFsAboveNyquist());
+  it('should generate a sine wave signal', () => WaveSignal.genSine());
+  it('should generate a triangular wave signal', () => WaveSignal.genTriangular());
+  it('should generate a square wave signal', () => WaveSignal.genSquare());
+});
 
 // Codecs
 
