@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsc",
     "prepublishOnly": "npm run rebuild && npm run test-coverage",
     "rebuild": "rm './dist/' -rf && tsc",
-    "build": "tsc",
     "test": "mocha --reporter spec",
     "test-coverage": "nyc --check-coverage --lines 75 npm test"
   },
@@ -15,9 +15,20 @@
     "rebuild",
     "test-coverage"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/chidiwilliams/datacomm-lab.git"
+  },
   "keywords": [],
   "author": "Chidi Williams <williamschidi1@gmail.com> (https://www.github.com/chidiwilliams)",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chidiwilliams/datacomm-lab/issues"
+  },
+  "files": [
+    "dist/"
+  ],
+  "homepage": "https://github.com/chidiwilliams/datacomm-lab",
   "devDependencies": {
     "@types/mathjs": "^4.4.0",
     "chai": "^4.1.2",

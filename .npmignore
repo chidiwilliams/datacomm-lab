@@ -1,7 +1,0 @@
-node_modules/
-/tester.js
-.nyc_output/
-.vscode/
-coverage/
-
-lib/
