@@ -3,7 +3,7 @@ const math = require('mathjs');
 const lab = require('../../dist');
 
 const fft = () => {
-  const t = new lab.FFT().fft([
+  const t = lab.Functions.fft([
     math.complex(2, 0),
     math.complex(4, 0),
     math.complex(8, 0),
@@ -19,14 +19,13 @@ const fft = () => {
 };
 
 const rejectFFTForNonPow2ArrLen = () => {
-  const fft = new lab.FFT();
-  expect(() => fft.fft([1, 0, 1, 0, 1])).to.throw(
+  expect(() => lab.Functions.fft([1, 0, 1, 0, 1])).to.throw(
     'Signal sampling frequency must be a power of 2.'
   );
 };
 
 const ifft = () => {
-  const t = new lab.FFT().ifft([
+  const t = lab.Functions.ifft([
     math.complex(8, 0),
     math.complex(0),
     math.complex(0),
@@ -42,14 +41,13 @@ const ifft = () => {
 };
 
 const rejectIFFTForNonPow2ArrLen = () => {
-  const fft = new lab.FFT();
-  expect(() => fft.ifft([1, 0, 1, 0, 1])).to.throw(
+  expect(() => lab.Functions.ifft([1, 0, 1, 0, 1])).to.throw(
     'Signal sampling frequency must be a power of 2.'
   );
 };
 
 const cconvolve = () => {
-  const c = new lab.FFT().cconvolve([2, 2, 2, 2], [2, 2, 2, 2]);
+  const c = lab.Functions.cconvolve([2, 2, 2, 2], [2, 2, 2, 2]);
 
   expect(c).to.eql([
     math.complex(16, 0),
@@ -60,21 +58,19 @@ const cconvolve = () => {
 };
 
 const rejectCConvolveForNonPow2ArrLen = () => {
-  const fft = new lab.FFT();
-  expect(() => fft.cconvolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])).to.throw(
-    'Signal sampling frequency must be a power of 2.'
-  );
+  expect(() =>
+    lab.Functions.cconvolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])
+  ).to.throw('Signal sampling frequency must be a power of 2.');
 };
 
 const rejectCConvolveForLengthMismatch = () => {
-  const fft = new lab.FFT();
-  expect(() => fft.cconvolve([1, 0, 1], [0, 1])).to.throw(
+  expect(() => lab.Functions.cconvolve([1, 0, 1], [0, 1])).to.throw(
     'Arrays must have equal lengths.'
   );
 };
 
 const convolve = () => {
-  const t = new lab.FFT().convolve([1, 0], [0, 1]);
+  const t = lab.Functions.convolve([1, 0], [0, 1]);
 
   expect(t).to.eql([
     math.complex(0, 0),
@@ -85,15 +81,24 @@ const convolve = () => {
 };
 
 const rejectConvolveForNonPow2ArrLen = () => {
-  const fft = new lab.FFT();
-  expect(() => fft.convolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])).to.throw(
-    'Signal sampling frequency must be a power of 2.'
-  );
+  expect(() =>
+    lab.Functions.convolve([1, 0, 1, 0, 1], [1, 0, 1, 0, 1])
+  ).to.throw('Signal sampling frequency must be a power of 2.');
 };
 
 const rejectConvolveForLengthMismatch = () => {
-  const fft = new lab.FFT();
-  expect(() => fft.convolve([1, 0, 1], [0, 1])).to.throw(
+  expect(() => lab.Functions.convolve([1, 0, 1], [0, 1])).to.throw(
+    'Arrays must have equal lengths.'
+  );
+};
+
+const add = () => {
+  const sum = lab.Functions.add([[1, 1], [2, 4], [-1, 0]]);
+  expect(sum).to.eql([2, 5]);
+};
+
+const rejectAddForDiffLens = () => {
+  expect(() => lab.Functions.add([[1, 1, 6], [2, 4], [-1, 0]])).to.throw(
     'Arrays must have equal lengths.'
   );
 };
@@ -109,4 +114,6 @@ module.exports = {
   convolve,
   rejectConvolveForNonPow2ArrLen,
   rejectConvolveForLengthMismatch,
+  add,
+  rejectAddForDiffLens,
 };

@@ -128,13 +128,13 @@ var Signal = /** @class */ (function () {
      * @memberof Signal
      */
     Signal.prototype.getFrequencyResponse = function () {
-        if (!__1.FFT.isRadix2(this._signal.length)) {
+        if (!__1.Functions.isRadix2(this._signal.length)) {
             throw new Error('Signal sampling frequency must be a power of 2.');
         }
         // Convert signal to complex array
         var comp = this._signal.map(function (x) { return math.complex(x, 0); });
         // Compute FFT
-        var sigFFT = new __1.FFT().fft(comp);
+        var sigFFT = __1.Functions.fft(comp);
         // Compute two-sided spectrum
         var twoSSpectrum = new Array(this.signal.length);
         for (var i = 0; i < twoSSpectrum.length; i++) {

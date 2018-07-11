@@ -8,15 +8,15 @@ export class AWGN {
   /**
    * Get the noise array
    *
+   * @static
    * @param {number} numSamples
-   * @param {number} [amp]
    * @returns {number[]}
    * @memberof AWGN
    */
-  public generate(numSamples: number): number[] {
+  public static generate(numSamples: number): number[] {
     const n = new Array(numSamples);
     for (let i = 0; i < n.length; i++) {
-      n[i] = this.next();
+      n[i] = AWGN._next();
     }
 
     return n;
@@ -25,10 +25,12 @@ export class AWGN {
   /**
    * Generates new Gaussian random number
    *
+   * @private
+   * @static
    * @returns {number}
    * @memberof AWGN
    */
-  private next(): number {
+  private static _next(): number {
     let u = 0;
     let v = 0;
     while (u === 0) u = Math.random();

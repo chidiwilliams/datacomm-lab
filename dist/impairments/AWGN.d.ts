@@ -8,17 +8,19 @@ export declare class AWGN {
     /**
      * Get the noise array
      *
+     * @static
      * @param {number} numSamples
-     * @param {number} [amp]
      * @returns {number[]}
      * @memberof AWGN
      */
-    generate(numSamples: number): number[];
+    static generate(numSamples: number): number[];
     /**
      * Generates new Gaussian random number
      *
+     * @private
+     * @static
      * @returns {number}
      * @memberof AWGN
      */
-    private next;
+    private static _next;
 }

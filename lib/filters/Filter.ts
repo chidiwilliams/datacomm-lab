@@ -1,10 +1,9 @@
 export class Filter {
   private _m_filt_t: FilterType;
   private _m_num_taps: number;
-  private _m_error_flag: number;
   private _m_Fs: number;
-  private _m_Fx: number = 0;
-  private _m_lambda: number = 0;
+  private _m_Fx: number;
+  private _m_lambda: number;
   private _m_taps: number[];
   private _m_sr: number[];
 
@@ -18,9 +17,8 @@ export class Filter {
     filt_t: FilterType,
     num_taps: number,
     Fs: number,
-    Fn: number | FilterFreq
+    Fx: number | FilterFreq
   ) {
-    this._m_error_flag = 0;
     this._m_filt_t = filt_t;
     this._m_Fs = Fs;
     this._m_num_taps = num_taps;
@@ -29,46 +27,59 @@ export class Filter {
     this._m_sr = new Array(this._m_num_taps);
 
     if (Fs <= 0) {
-      this._m_error_flag = -1;
-      return;
+      throw new Error('Fs must be greater than zero.');
     }
 
     if (num_taps <= 0 || num_taps > Filter.MAX_NUM_FILTER_TAPS) {
-      this._m_error_flag = -3;
-      return;
+      throw new Error(
+        'num_taps must be greater than zero and less than Filter.MAX_NUM_FILTER_TAPS.'
+      );
     }
 
     if (filt_t === FilterType.LPF || filt_t === FilterType.HPF) {
-      if (typeof Fn === 'object') {
-        // TODO: Flag appropriately
-        return;
+      if (typeof Fx !== 'number') {
+        throw new Error(
+          'Fx must be a number for FilterType.LPF and FilterType.HPF.'
+        );
       }
 
-      if (Fn <= 0 || Fn >= Fs / 2) {
-        this._m_error_flag = -2;
-        return;
+      if (Fx <= 0 || Fx >= Fs / 2) {
+        throw new Error('Fx must be greater than zero and less than Fs / 2.');
       }
 
-      this._m_Fx = Fn;
-      this._m_lambda = (Math.PI * Fn) / (Fs / 2);
+      this._m_Fx = Fx;
+      this._m_lambda = (Math.PI * Fx) / (Fs / 2);
     } else {
-      if (typeof Fn === 'number') {
-        // TODO: Flag appropriately
-        return;
+      if (
+        typeof Fx !== 'object' ||
+        typeof Fx.Fl === 'undefined' ||
+        typeof Fx.Fu === 'undefined'
+      ) {
+        throw new Error(
+          'Fx must be an object ({ Fl: number, Fu: number }) for FilterType.BPF.'
+        );
       }
 
-      if (Fn.Fl <= 0 || Fn.Fl >= Fs / 2 || Fn.Fu <= 0 || Fn.Fu >= Fs / 2) {
-        this._m_error_flag = -2;
-        return;
+      if (!(Fx.Fu > Fx.Fl)) {
+        throw new Error('Fx.Fu must be greater than Fx.Fl.');
       }
 
-      // Check if array has only two elements
-      // Check if elem1 < elem2
+      if (Fx.Fl <= 0 || Fx.Fl >= Fs / 2) {
+        throw new Error(
+          'Fx.Fl must be greater than zero and less than Fs / 2.'
+        );
+      }
 
-      this._m_Fx = Fn.Fl;
-      this._m_Fu = Fn.Fu;
-      this._m_lambda = (Math.PI * Fn.Fl) / (Fs / 2);
-      this._m_phi = (Math.PI * Fn.Fu) / (Fs / 2);
+      if (Fx.Fu <= 0 || Fx.Fu >= Fs / 2) {
+        throw new Error(
+          'Fx.Fu must be greater than zero and less than Fs / 2.'
+        );
+      }
+
+      this._m_Fx = Fx.Fl;
+      this._m_Fu = Fx.Fu;
+      this._m_lambda = (Math.PI * Fx.Fl) / (Fs / 2);
+      this._m_phi = (Math.PI * Fx.Fu) / (Fs / 2);
     }
 
     // Initialize shift registers
@@ -88,7 +99,7 @@ export class Filter {
 
   private designLPF() {
     for (let n = 0; n < this._m_num_taps; n++) {
-      const mm = n - (this._m_num_taps - 1.0) / 2.0;
+      const mm = Math.floor(n - (this._m_num_taps - 1) / 2);
       if (mm === 0) {
         this._m_taps[n] = this._m_lambda / Math.PI;
       } else {
@@ -99,18 +110,18 @@ export class Filter {
 
   private designHPF() {
     for (let n = 0; n < this._m_num_taps; n++) {
-      const mm = n - (this._m_num_taps - 1.0) / 2.0;
+      const mm = Math.floor(n - (this._m_num_taps - 1) / 2);
       if (mm === 0) {
-        this._m_taps[n] = 1.0 - this._m_lambda / Math.PI;
+        this._m_taps[n] = 1 - this._m_lambda / Math.PI;
       } else {
-        this._m_taps[n] = -Math.sin(mm * this._m_lambda) / (mm * Math.PI);
+        this._m_taps[n] = (-1 * Math.sin(mm * this._m_lambda)) / (mm * Math.PI);
       }
     }
   }
 
   private designBPF() {
     for (let n = 0; n < this._m_num_taps; n++) {
-      const mm = n - (this._m_num_taps - 1.0) / 2.0;
+      const mm = Math.floor(n - (this._m_num_taps - 1) / 2);
       if (mm === 0) {
         this._m_taps[n] = (this._m_phi - this._m_lambda) / Math.PI;
       } else {
@@ -122,10 +133,6 @@ export class Filter {
   }
 
   public do_sample(data_sample: number): number {
-    if (this._m_error_flag !== 0) {
-      return 0;
-    }
-
     // Shift register values
     for (let i = this._m_num_taps - 1; i >= 1; i--) {
       this._m_sr[i] = this._m_sr[i - 1];
@@ -140,10 +147,6 @@ export class Filter {
     }
 
     return result;
-  }
-
-  public get errorFlag(): number {
-    return this._m_error_flag;
   }
 
   public get taps(): number[] {

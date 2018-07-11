@@ -20,5 +20,5 @@ var Filter_1 = require("./filters/Filter");
 exports.Filter = Filter_1.Filter;
 exports.FilterType = Filter_1.FilterType;
 // Transforms
-var FFT_1 = require("./transforms/FFT");
-exports.FFT = FFT_1.FFT;
+var Functions_1 = require("./functions/Functions");
+exports.Functions = Functions_1.Functions;

@@ -6,7 +6,7 @@ import * as math from 'mathjs';
  * @export
  * @class FFT
  */
-export class FFT {
+export class Functions {
   /**
    * Computes the Fast Fourier Transform of a signal
    * using Radix-2 Cooley-Tukey algorithm
@@ -15,13 +15,13 @@ export class FFT {
    * @returns {math.Complex[]} Signal in frequency-domain
    * @memberof FFT
    */
-  public fft(x: math.Complex[]): math.Complex[] {
+  public static fft(x: math.Complex[]): math.Complex[] {
     // Base case
     if (x.length === 1) {
       return [x[0]];
     }
 
-    if (!FFT.isRadix2(x.length)) {
+    if (!Functions.isRadix2(x.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }
 
@@ -62,8 +62,8 @@ export class FFT {
    * @returns {math.Complex[]} Signal in time-domain
    * @memberof FFT
    */
-  public ifft(x: math.Complex[]): math.Complex[] {
-    if (!FFT.isRadix2(x.length)) {
+  public static ifft(x: math.Complex[]): math.Complex[] {
+    if (!Functions.isRadix2(x.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }
 
@@ -92,12 +92,15 @@ export class FFT {
    * @returns {math.Complex[]} Circular convolution result
    * @memberof FFT
    */
-  public cconvolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
+  public static cconvolve(
+    x: math.Complex[],
+    y: math.Complex[]
+  ): math.Complex[] {
     if (x.length !== y.length) {
       throw new Error('Arrays must have equal lengths.');
     }
 
-    if (!FFT.isRadix2(x.length) || !FFT.isRadix2(y.length)) {
+    if (!Functions.isRadix2(x.length) || !Functions.isRadix2(y.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }
 
@@ -123,12 +126,12 @@ export class FFT {
    * @returns {math.Complex[]} Convolution result
    * @memberof FFT
    */
-  public convolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
+  public static convolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
     if (x.length !== y.length) {
       throw new Error('Arrays must have equal lengths.');
     }
 
-    if (!FFT.isRadix2(x.length) || !FFT.isRadix2(y.length)) {
+    if (!Functions.isRadix2(x.length) || !Functions.isRadix2(y.length)) {
       throw new Error('Signal sampling frequency must be a power of 2.');
     }
 
@@ -146,12 +149,31 @@ export class FFT {
       b[i] = ZERO;
     }
 
-    return this.cconvolve(a, b);
+    return Functions.cconvolve(a, b);
   }
 
   public static isRadix2(n: number): boolean {
     if (n <= 0 || n % 2 !== 0) return false;
     if (n === 2) return true;
-    return FFT.isRadix2(n / 2);
+    return Functions.isRadix2(n / 2);
+  }
+
+  public static add(x: Array<Array<number>>): number[] {
+    for (let i = 0; i < x.length - 1; i++) {
+      if (x[i].length !== x[i + 1].length) {
+        throw new Error('Arrays must have equal lengths.');
+      }
+    }
+
+    const y: number[] = new Array(x[0].length);
+    for (let i = 0; i < y.length; i++) {
+      let sum = 0;
+      for (let j = 0; j < x.length; j++) {
+        sum += x[j][i];
+      }
+      y[i] = sum;
+    }
+
+    return y;
   }
 }

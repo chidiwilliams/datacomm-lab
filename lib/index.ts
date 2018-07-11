@@ -15,4 +15,4 @@ export { Hamming4 } from './codecs/Hamming4';
 export { Filter, FilterType } from './filters/Filter';
 
 // Transforms
-export { FFT } from './transforms/FFT';
+export { Functions } from './functions/Functions';
