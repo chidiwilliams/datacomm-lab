@@ -9,7 +9,7 @@
     "prepublishOnly": "npm run rebuild && npm run test-coverage",
     "rebuild": "rm './dist/' -rf && tsc",
     "test": "mocha --reporter spec",
-    "test-coverage": "nyc --check-coverage --lines 75 npm test"
+    "test-coverage": "nyc --check-coverage --lines 95 npm test"
   },
   "pre-commit": [
     "rebuild",

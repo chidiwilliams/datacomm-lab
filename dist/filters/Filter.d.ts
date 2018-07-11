@@ -1,7 +1,6 @@
 export declare class Filter {
     private _m_filt_t;
     private _m_num_taps;
-    private _m_error_flag;
     private _m_Fs;
     private _m_Fx;
     private _m_lambda;
@@ -15,7 +14,6 @@ export declare class Filter {
     private designHPF;
     private designBPF;
     do_sample(data_sample: number): number;
-    readonly errorFlag: number;
     readonly taps: number[];
 }
 export declare enum FilterType {

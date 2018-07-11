@@ -5,11 +5,12 @@ const AWGN = require('./impairments/AWGN');
 const Signal = require('./signals/Signal');
 const WaveSignal = require('./signals/WaveSignal');
 const BPSK = require('./modulations/BPSK');
+const Filter = require('./filters/Filter');
 
 // Signals
 
 // Signal
-describe('Signal functions', () => {
+describe('Signal tests', () => {
   it('should create empty Signal array', () => Signal.create());
   it('should set Signal array', () => Signal.setSignal());
   it('should not set Signal array with an array of a different length', () =>
@@ -32,18 +33,19 @@ describe('Signal functions', () => {
 });
 
 // Wave Signal
-describe('Wave signal functions', () => {
+describe('Wave signal tests', () => {
   it('should generate a signal with a frequency greater than or equal to half its sampling frequency', () =>
     WaveSignal.rejectGenForFsAboveNyquist());
   it('should generate a sine wave signal', () => WaveSignal.genSine());
-  it('should generate a triangular wave signal', () => WaveSignal.genTriangular());
+  it('should generate a triangular wave signal', () =>
+    WaveSignal.genTriangular());
   it('should generate a square wave signal', () => WaveSignal.genSquare());
 });
 
 // Codecs
 
 // Hamming codec
-describe('Hamming-7,4 codec functions', () => {
+describe('Hamming-7,4 codec tests', () => {
   // Encoding
   it('should encode', () => Hamming4.encode());
   it('should encode and add parity bit', () => Hamming4.encodePlusParity());
@@ -67,7 +69,7 @@ describe('Hamming-7,4 codec functions', () => {
 // IMPAIRMENTS
 
 // AWGN
-describe('AWGN functions', () => {
+describe('AWGN tests', () => {
   it('should generate sample with mean between -0.08 and +0.08', () =>
     AWGN.generate());
 });
@@ -75,7 +77,7 @@ describe('AWGN functions', () => {
 // MODULATION SCHEMES
 
 // BPSK
-describe('BPSK functions', () => {
+describe('BPSK tests', () => {
   it('should perform BPSK modulation', () => BPSK.bpskMod());
   it('should not perform BPSK modulation if baseband and carrier have different lengths', () =>
     BPSK.rejectBpskModForLenMismatch());
@@ -88,8 +90,8 @@ describe('BPSK functions', () => {
     BPSK.rejectBpskGvnDemodForLenMismatch());
 });
 
-// FFT
-describe('FFT functions', () => {
+// Functions
+describe('Signal functions tests', () => {
   it('should perform FFT', () => Functions.fft());
   it('should not perform FFT if array length is not a power of 2', () =>
     Functions.rejectFFTForNonPow2ArrLen());
@@ -106,4 +108,32 @@ describe('FFT functions', () => {
     Functions.rejectConvolveForNonPow2ArrLen());
   it('should not perform Convolution of two arrays of different lengths', () =>
     Functions.rejectConvolveForLengthMismatch());
+  it('should perform addition of multiple arrays', () =>
+    Functions.add());
+  it('should not perform addition of multiple arrays with different lengths', () =>
+    Functions.rejectAddForDiffLens());
+});
+
+// FILTERS
+describe('Filter functions', () => {
+  it('should compute the filter taps', () => Filter.taps());
+  it('should perform Low Pass filtering on a signal', () => Filter.LP());
+  it('should perform High Pass filtering on a signal', () => Filter.HP());
+  it('should perform Band Pass filtering on a signal', () => Filter.BP());
+  it('it should not create a filter with a sampling frequency less than or equal to zero', () =>
+    Filter.rejectCreateForZeroOrLessFs());
+  it('it should not create a filter whose number of taps is less than or equal to zero or more than the maximum limit', () =>
+    Filter.rejectCreateForOOBNumTaps());
+  it('it should not create a Low Pass or High Pass filter if the cutoff frequency is not a number', () =>
+    Filter.rejectLPHPForNonNumFs());
+  it('it should not create a Low Pass or High Pass filter if the cutoff frequency is less than or equal to zero or greater than Fs / 2', () =>
+    Filter.rejectLPHPForOOBFx());
+  it('it should not create a Band Pass filter if Fx is not an object containing Fl and Fu', () =>
+    Filter.rejectBPForIllFx());
+  it('it should not create a Band Pass filter if the lower cutoff frequency is higher than the upper cutoff frequency', () =>
+    Filter.rejectBPForFlHigherThanFu());
+  it('it should not create a Band Pass filter if the lower cutoff frequency is less than or equal to zero or greater than Fs / 2', () =>
+    Filter.rejectBPForOOBFl());
+  it('it should not create a Band Pass filter if the higher cutoff frequency is less than or equal to zero or greater than Fs / 2', () =>
+    Filter.rejectBPForOOBFu());
 });

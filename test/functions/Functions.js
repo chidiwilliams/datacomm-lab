@@ -92,6 +92,17 @@ const rejectConvolveForLengthMismatch = () => {
   );
 };
 
+const add = () => {
+  const sum = lab.Functions.add([[1, 1], [2, 4], [-1, 0]]);
+  expect(sum).to.eql([2, 5]);
+};
+
+const rejectAddForDiffLens = () => {
+  expect(() => lab.Functions.add([[1, 1, 6], [2, 4], [-1, 0]])).to.throw(
+    'Arrays must have equal lengths.'
+  );
+};
+
 module.exports = {
   fft,
   rejectFFTForNonPow2ArrLen,
@@ -103,4 +114,6 @@ module.exports = {
   convolve,
   rejectConvolveForNonPow2ArrLen,
   rejectConvolveForLengthMismatch,
+  add,
+  rejectAddForDiffLens,
 };
