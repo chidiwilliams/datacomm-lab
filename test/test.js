@@ -1,15 +1,16 @@
 'use strict';
 const Functions = require('./functions/Functions');
 const Hamming4 = require('./codecs/Hamming4');
+const Convolutional = require('./codecs/Convolutional');
 const AWGN = require('./impairments/AWGN');
 const Signal = require('./signals/Signal');
 const WaveSignal = require('./signals/WaveSignal');
 const BPSK = require('./modulations/BPSK');
 const Filter = require('./filters/Filter');
 
-// Signals
+// SIGNALS
 
-// Signal
+// SIGNAL
 describe('Signal tests', () => {
   it('should create empty Signal array', () => Signal.create());
   it('should set Signal array', () => Signal.setSignal());
@@ -32,7 +33,7 @@ describe('Signal tests', () => {
     Signal.rejectFResForNonPow2Fs());
 });
 
-// Wave Signal
+// WAVE SIGNAL
 describe('Wave signal tests', () => {
   it('should generate a signal with a frequency greater than or equal to half its sampling frequency', () =>
     WaveSignal.rejectGenForFsAboveNyquist());
@@ -42,9 +43,9 @@ describe('Wave signal tests', () => {
   it('should generate a square wave signal', () => WaveSignal.genSquare());
 });
 
-// Codecs
+// CODECS
 
-// Hamming codec
+// HAMMING CODEC
 describe('Hamming-7,4 codec tests', () => {
   // Encoding
   it('should encode', () => Hamming4.encode());
@@ -64,6 +65,34 @@ describe('Hamming-7,4 codec tests', () => {
   it('should correct single-bit one error', () => Hamming4.correctOne());
   it('should not correct an array of length not equal to 7', () =>
     Hamming4.rejectCorrectionByLength());
+});
+
+// CONVOLUTIONAL CODEC
+describe('Convolutional codec tests', () => {
+  it('should create a convolutional codec with an output function', () =>
+    Convolutional.createWFunc());
+  it('should create a convolutional codec with an output function with non-binary values', () =>
+    Convolutional.rejCreateWFuncForNonBinVals());
+  it('should create a convolutional codec with an output symbol', () =>
+    Convolutional.createWSym());
+  it('should encode a single input', () => Convolutional.encode());
+  it('should encode an array of inputs', () => Convolutional.encodeAll());
+  it('should decode an array of outputs', () => Convolutional.decode());
+  it("should not decode an array of outputs if the given number of outputs do not equal the codec's number of outputs", () =>
+    Convolutional.rejDecodeForInvOutsNum());
+  it('should not decode an array of outputs if the given encoded array contains non-binary values', () =>
+    Convolutional.rejDecodeForNonBinOp());
+  it('should correct an array of outputs', () => Convolutional.correct());
+  it('should set the state of the convolutional codec', () =>
+    Convolutional.setState());
+  it('should compute the weights between an array and other arrays', () =>
+    Convolutional.computeWeights());
+  it('should not compute the weights between an array and other arrays if the lengths of the arrays are not equal', () =>
+    Convolutional.rejComputeWeightsForDiffLens());
+  it('should left-pad a string with another string', () =>
+    Convolutional.padLeft());
+  it('should not left-pad a string with another string if the length of the string to be padded is greater than the given pad width', () =>
+    Convolutional.rejPadLeftAboveWidth());
 });
 
 // IMPAIRMENTS
@@ -108,8 +137,7 @@ describe('Signal functions tests', () => {
     Functions.rejectConvolveForNonPow2ArrLen());
   it('should not perform Convolution of two arrays of different lengths', () =>
     Functions.rejectConvolveForLengthMismatch());
-  it('should perform addition of multiple arrays', () =>
-    Functions.add());
+  it('should perform addition of multiple arrays', () => Functions.add());
   it('should not perform addition of multiple arrays with different lengths', () =>
     Functions.rejectAddForDiffLens());
 });

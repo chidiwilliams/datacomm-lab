@@ -14,13 +14,4 @@ export declare class AWGN {
      * @memberof AWGN
      */
     static generate(numSamples: number): number[];
-    /**
-     * Generates new Gaussian random number
-     *
-     * @private
-     * @static
-     * @returns {number}
-     * @memberof AWGN
-     */
-    private static _next;
 }

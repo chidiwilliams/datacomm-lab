@@ -43,6 +43,22 @@ export declare class Functions {
      * @memberof FFT
      */
     static convolve(x: math.Complex[], y: math.Complex[]): math.Complex[];
+    /**
+     * Returns true if n is a power of 2. Else, returns false.
+     *
+     * @static
+     * @param {number} n Number
+     * @returns {boolean} Result
+     * @memberof Functions
+     */
     static isRadix2(n: number): boolean;
-    static add(x: Array<Array<number>>): number[];
+    /**
+     * Returns the element-wise addition of the arrays
+     *
+     * @static
+     * @param {number[][]} x Array of arrays containting numbers
+     * @returns {number[]} Array of addition
+     * @memberof Functions
+     */
+    static add(x: number[][]): number[];
 }
