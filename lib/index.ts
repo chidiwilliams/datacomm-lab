@@ -10,6 +10,7 @@ export { AWGN } from './impairments/AWGN';
 
 // Codecs
 export { Hamming4 } from './codecs/Hamming4';
+export { Convolutional } from './codecs/Convolutional';
 
 // Filters
 export { Filter, FilterType } from './filters/Filter';

@@ -15,6 +15,8 @@ exports.AWGN = AWGN_1.AWGN;
 // Codecs
 var Hamming4_1 = require("./codecs/Hamming4");
 exports.Hamming4 = Hamming4_1.Hamming4;
+var Convolutional_1 = require("./codecs/Convolutional");
+exports.Convolutional = Convolutional_1.Convolutional;
 // Filters
 var Filter_1 = require("./filters/Filter");
 exports.Filter = Filter_1.Filter;

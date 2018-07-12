@@ -133,6 +133,14 @@ var Functions = /** @class */ (function () {
         }
         return Functions.cconvolve(a, b);
     };
+    /**
+     * Returns true if n is a power of 2. Else, returns false.
+     *
+     * @static
+     * @param {number} n Number
+     * @returns {boolean} Result
+     * @memberof Functions
+     */
     Functions.isRadix2 = function (n) {
         if (n <= 0 || n % 2 !== 0)
             return false;
@@ -140,6 +148,14 @@ var Functions = /** @class */ (function () {
             return true;
         return Functions.isRadix2(n / 2);
     };
+    /**
+     * Returns the element-wise addition of the arrays
+     *
+     * @static
+     * @param {number[][]} x Array of arrays containting numbers
+     * @returns {number[]} Array of addition
+     * @memberof Functions
+     */
     Functions.add = function (x) {
         for (var i = 0; i < x.length - 1; i++) {
             if (x[i].length !== x[i + 1].length) {

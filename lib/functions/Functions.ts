@@ -152,13 +152,29 @@ export class Functions {
     return Functions.cconvolve(a, b);
   }
 
+  /**
+   * Returns true if n is a power of 2. Else, returns false.
+   *
+   * @static
+   * @param {number} n Number
+   * @returns {boolean} Result
+   * @memberof Functions
+   */
   public static isRadix2(n: number): boolean {
     if (n <= 0 || n % 2 !== 0) return false;
     if (n === 2) return true;
     return Functions.isRadix2(n / 2);
   }
 
-  public static add(x: Array<Array<number>>): number[] {
+  /**
+   * Returns the element-wise addition of the arrays
+   *
+   * @static
+   * @param {number[][]} x Array of arrays containting numbers
+   * @returns {number[]} Array of addition
+   * @memberof Functions
+   */
+  public static add(x: number[][]): number[] {
     for (let i = 0; i < x.length - 1; i++) {
       if (x[i].length !== x[i + 1].length) {
         throw new Error('Arrays must have equal lengths.');
