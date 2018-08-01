@@ -30,27 +30,22 @@ const genSine = () => {
     -0.7071,
   ];
 
-  sig.signal.forEach((x, i) =>
-    expect(math.abs(x - rec[i])).to.be.lessThan(1e-5)
-  );
+  for (let i = 0; i < sig.signal.length; i++) {
+    expect(math.abs(sig.signal[i] - rec[i])).to.be.lessThan(1e-5);
+  }
 };
 
 const genTriangular = () => {
   const sig = new lab.WaveSignal(lab.WaveSignalType.TRIANGULAR, 8, 2, 0);
-
   const rec = [0, 1, 0, -1, 0, 1, 0, -1];
-  sig.signal.forEach((x, i) =>
-    expect(math.abs(x - rec[i])).to.be.lessThan(1e-5)
-  );
+  for (let i = 0; i < sig.signal.length; i++) {
+    expect(math.abs(sig.signal[i] - rec[i])).to.be.lessThan(1e-5);
+  }
 };
 
 const genSquare = () => {
   const sig = new lab.WaveSignal(lab.WaveSignalType.SQUARE, 8, 2, 0);
-
-  const rec = [1, 1, 0, 0, 1, 1, 0, 0];
-  sig.signal.forEach((x, i) =>
-    expect(math.abs(x - rec[i])).to.be.lessThan(1e-5)
-  );
+  expect(sig.signal).to.eql([1, 1, 0, 0, 1, 1, 0, 0]);
 };
 
 module.exports = {

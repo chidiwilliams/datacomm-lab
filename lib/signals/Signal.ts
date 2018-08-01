@@ -123,6 +123,22 @@ export class Signal {
   }
 
   /**
+   * First, samples the signal at the value specified by num_thresh. Then,
+   * resamples the new signal at the original signal sampling frequency, and
+   * converts each value to 1 (if the value is greater than 0) or 0 (if the
+   * value is less than or equal to zero).
+   *
+   * @param {number} num_thresh Number of threshold points to represent
+   * @returns {number[]} Binary thresholds array
+   * @memberof Signal
+   */
+  public getBinaryThresholds(num_thresh: number): number[] {
+    const samp = new Signal(num_thresh);
+    samp.signal = this.sample(num_thresh);
+    return samp.sample(this.Fs).map((x, i) => (x > 0 ? 1 : 0));
+  }
+
+  /**
    * Returns the frequency magnitude response of the signal
    *
    * @returns Frequency magnitude response array

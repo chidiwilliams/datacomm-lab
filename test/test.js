@@ -31,6 +31,7 @@ describe('Signal tests', () => {
   it('should compute the Frequency magnitude response', () => Signal.fRes());
   it('should not compute the Frequency magnitude response if the sampling frequency is not a power of 2', () =>
     Signal.rejectFResForNonPow2Fs());
+  it('should get binary thresholds', () => Signal.getBinaryThresholds());
 });
 
 // WAVE SIGNAL

@@ -1,6 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Filter = /** @class */ (function () {
+    /**
+     *Creates an instance of Filter.
+     * @param {FilterType} filt_t Filter type
+     * @param {number} num_taps Number of filter taps
+     * @param {number} Fs Sampling frequency
+     * @param {(number | FilterFreq)} Fx Cutoff frequency / frequencies
+     * @memberof Filter
+     */
     function Filter(filt_t, num_taps, Fs, Fx) {
         // Set these values to zero for lpf/hpf filters
         this._m_Fu = 0;
@@ -61,6 +69,12 @@ var Filter = /** @class */ (function () {
             this.designBPF();
         }
     }
+    /**
+     * Designs a low-pass filter
+     *
+     * @private
+     * @memberof Filter
+     */
     Filter.prototype.designLPF = function () {
         for (var n = 0; n < this._m_num_taps; n++) {
             var mm = Math.floor(n - (this._m_num_taps - 1) / 2);
@@ -72,6 +86,12 @@ var Filter = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Designs a high-pass filter
+     *
+     * @private
+     * @memberof Filter
+     */
     Filter.prototype.designHPF = function () {
         for (var n = 0; n < this._m_num_taps; n++) {
             var mm = Math.floor(n - (this._m_num_taps - 1) / 2);
@@ -83,6 +103,12 @@ var Filter = /** @class */ (function () {
             }
         }
     };
+    /**
+     * Designs a band-pass filter
+     *
+     * @private
+     * @memberof Filter
+     */
     Filter.prototype.designBPF = function () {
         for (var n = 0; n < this._m_num_taps; n++) {
             var mm = Math.floor(n - (this._m_num_taps - 1) / 2);
@@ -96,20 +122,45 @@ var Filter = /** @class */ (function () {
             }
         }
     };
-    Filter.prototype.do_sample = function (data_sample) {
+    /**
+     * Filters a single input sample.
+     *
+     * @param {number} samp Input sample
+     * @returns {number} Filtered sample
+     * @memberof Filter
+     */
+    Filter.prototype.do_sample = function (samp) {
         // Shift register values
         for (var i = this._m_num_taps - 1; i >= 1; i--) {
             this._m_sr[i] = this._m_sr[i - 1];
         }
         // Set first register value to sample number
-        this._m_sr[0] = data_sample;
+        this._m_sr[0] = samp;
         var result = 0;
         for (var i = 0; i < this._m_num_taps; i++) {
             result += this._m_sr[i] * this._m_taps[i];
         }
         return result;
     };
+    /**
+     * Filters an array of samples.
+     *
+     * @param {number[]} samps Array of samples
+     * @returns {number[]} Array of filtered samples
+     * @memberof Filter
+     */
+    Filter.prototype.do_sample_all = function (samps) {
+        var _this = this;
+        return samps.slice().map(function (x) { return _this.do_sample(x); });
+    };
     Object.defineProperty(Filter.prototype, "taps", {
+        /**
+         * Returns the filter taps
+         *
+         * @readonly
+         * @type {number[]} Array of filter taps
+         * @memberof Filter
+         */
         get: function () {
             return this._m_taps;
         },

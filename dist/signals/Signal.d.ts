@@ -61,6 +61,17 @@ export declare class Signal {
      */
     sample(Fs: number): number[];
     /**
+     * First, samples the signal at the value specified by num_thresh. Then,
+     * resamples the new signal at the original signal sampling frequency, and
+     * converts each value to 1 (if the value is greater than 0) or 0 (if the
+     * value is less than or equal to zero).
+     *
+     * @param {number} num_thresh Number of threshold points to represent
+     * @returns {number[]} Binary thresholds array
+     * @memberof Signal
+     */
+    getBinaryThresholds(num_thresh: number): number[];
+    /**
      * Returns the frequency magnitude response of the signal
      *
      * @returns Frequency magnitude response array

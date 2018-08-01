@@ -52,11 +52,10 @@ var WaveSignal = /** @class */ (function (_super) {
      * @memberof WaveSignal
      */
     WaveSignal.prototype._generateSine = function () {
-        var carr = new Array(this.Fs);
-        for (var i = 0; i < this.Fs; i++) {
-            carr[i] = Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi);
-        }
-        return carr;
+        var _this = this;
+        return Array.apply(null, Array(this.Fs)).map(function (x, i) {
+            return Math.sin((2 * Math.PI * _this._Fa * i) / _this.Fs + _this._phi);
+        });
     };
     /**
      * Generates a square wave signal
@@ -66,7 +65,7 @@ var WaveSignal = /** @class */ (function (_super) {
      * @memberof WaveSignal
      */
     WaveSignal.prototype._generateSquare = function () {
-        var carr = new Array(this.Fs);
+        var carr = Array.apply(null, Array(this.Fs)).map(function () { return 0; });
         for (var i = 0; i < this._Fa; i++) {
             // Divide the samples by the number of repeating signal units (frequency, Fa)
             var k = this.Fs / this._Fa;
@@ -85,7 +84,7 @@ var WaveSignal = /** @class */ (function (_super) {
      * @memberof WaveSignal
      */
     WaveSignal.prototype._generateTriangular = function () {
-        var carr = new Array(this.Fs);
+        var carr = Array.apply(null, Array(this.Fs)).map(function () { return 0; });
         // For each frequency division...
         for (var i = 0; i < this._Fa; i++) {
             var k = this.Fs / this._Fa;

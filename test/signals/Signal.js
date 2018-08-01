@@ -84,6 +84,13 @@ const rejectFResForNonPow2Fs = () => {
   );
 };
 
+const getBinaryThresholds = () => {
+  const sig = new lab.Signal(8);
+  sig.signal = [1.2, -2.4, 2, 0, 9, -2.2, 0, -0.2];
+  expect(sig.getBinaryThresholds(8)).to.eql([1, 0, 1, 0, 1, 0, 0, 0]);
+  expect(sig.getBinaryThresholds(4)).to.eql([1, 1, 1, 1, 1, 1, 0, 0]);
+};
+
 module.exports = {
   create,
   setSignal,
@@ -96,4 +103,5 @@ module.exports = {
   rejectSampleHigherForNonMultFreq,
   fRes,
   rejectFResForNonPow2Fs,
+  getBinaryThresholds,
 };

@@ -47,11 +47,9 @@ export class WaveSignal extends Signal {
    * @memberof WaveSignal
    */
   private _generateSine(): number[] {
-    const carr: number[] = new Array(this.Fs);
-    for (let i = 0; i < this.Fs; i++) {
-      carr[i] = Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi);
-    }
-    return carr;
+    return Array.apply(null, Array(this.Fs)).map((x: any, i: any) =>
+      Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi)
+    );
   }
 
   /**
@@ -62,7 +60,7 @@ export class WaveSignal extends Signal {
    * @memberof WaveSignal
    */
   private _generateSquare(): number[] {
-    const carr: number[] = new Array(this.Fs);
+    const carr: number[] = Array.apply(null, Array(this.Fs)).map(() => 0);
     for (let i = 0; i < this._Fa; i++) {
       // Divide the samples by the number of repeating signal units (frequency, Fa)
       const k: number = this.Fs / this._Fa;
@@ -82,7 +80,7 @@ export class WaveSignal extends Signal {
    * @memberof WaveSignal
    */
   private _generateTriangular(): number[] {
-    const carr: number[] = new Array(this.Fs);
+    const carr: number[] = Array.apply(null, Array(this.Fs)).map(() => 0);
     // For each frequency division...
     for (let i = 0; i < this._Fa; i++) {
       const k: number = this.Fs / this._Fa;

@@ -17,13 +17,12 @@ const LP = () => {
 
   const sig = new lab.Signal(2048);
   sig.signal = lab.Functions.add([sig1.signal, sig2.signal]);
-  const sigRes = sig.getFrequencyResponse();
 
   // Filtering
   // Cut-off frequencies above 128
   const filt = new lab.Filter(lab.FilterType.LPF, 500, 2048, 128);
   const filtered = new lab.Signal(2048);
-  filtered.signal = sig.signal.map((x) => filt.do_sample(x));
+  filtered.signal = filt.do_sample_all(sig.signal);
   const filtRes = filtered.getFrequencyResponse();
 
   // After filtering
@@ -42,13 +41,12 @@ const HP = () => {
 
   const sig = new lab.Signal(2048);
   sig.signal = lab.Functions.add([sig1.signal, sig2.signal]);
-  const sigRes = sig.getFrequencyResponse();
 
   // Filtering
   // Cut-off frequencies below 128
   const filt = new lab.Filter(lab.FilterType.HPF, 500, 2048, 128);
   const filtered = new lab.Signal(2048);
-  filtered.signal = sig.signal.map((x) => filt.do_sample(x));
+  filtered.signal = filt.do_sample_all(sig.signal);
   const filtRes = filtered.getFrequencyResponse();
 
   // After filtering
@@ -67,7 +65,6 @@ const BP = () => {
 
   const sig = new lab.Signal(2048);
   sig.signal = lab.Functions.add([sig1.signal, sig2.signal]);
-  const sigRes = sig.getFrequencyResponse();
 
   // Filtering
   // Cut-off frequencies bewteen 128 and 512
@@ -76,7 +73,7 @@ const BP = () => {
     Fu: 512,
   });
   const filtered = new lab.Signal(2048);
-  filtered.signal = sig.signal.map((x) => filt.do_sample(x));
+  filtered.signal = filt.do_sample_all(sig.signal);
   const filtRes = filtered.getFrequencyResponse();
 
   // After filtering
