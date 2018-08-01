@@ -13,6 +13,14 @@ export class Filter {
 
   private static MAX_NUM_FILTER_TAPS = 1000;
 
+  /**
+   *Creates an instance of Filter.
+   * @param {FilterType} filt_t Filter type
+   * @param {number} num_taps Number of filter taps
+   * @param {number} Fs Sampling frequency
+   * @param {(number | FilterFreq)} Fx Cutoff frequency / frequencies
+   * @memberof Filter
+   */
   constructor(
     filt_t: FilterType,
     num_taps: number,
@@ -97,6 +105,12 @@ export class Filter {
     }
   }
 
+  /**
+   * Designs a low-pass filter
+   *
+   * @private
+   * @memberof Filter
+   */
   private designLPF() {
     for (let n = 0; n < this._m_num_taps; n++) {
       const mm = Math.floor(n - (this._m_num_taps - 1) / 2);
@@ -108,6 +122,12 @@ export class Filter {
     }
   }
 
+  /**
+   * Designs a high-pass filter
+   *
+   * @private
+   * @memberof Filter
+   */
   private designHPF() {
     for (let n = 0; n < this._m_num_taps; n++) {
       const mm = Math.floor(n - (this._m_num_taps - 1) / 2);
@@ -119,6 +139,12 @@ export class Filter {
     }
   }
 
+  /**
+   * Designs a band-pass filter
+   *
+   * @private
+   * @memberof Filter
+   */
   private designBPF() {
     for (let n = 0; n < this._m_num_taps; n++) {
       const mm = Math.floor(n - (this._m_num_taps - 1) / 2);
@@ -132,14 +158,21 @@ export class Filter {
     }
   }
 
-  public do_sample(data_sample: number): number {
+  /**
+   * Filters a single input sample.
+   *
+   * @param {number} samp Input sample
+   * @returns {number} Filtered sample
+   * @memberof Filter
+   */
+  public do_sample(samp: number): number {
     // Shift register values
     for (let i = this._m_num_taps - 1; i >= 1; i--) {
       this._m_sr[i] = this._m_sr[i - 1];
     }
 
     // Set first register value to sample number
-    this._m_sr[0] = data_sample;
+    this._m_sr[0] = samp;
 
     let result = 0;
     for (let i = 0; i < this._m_num_taps; i++) {
@@ -149,6 +182,24 @@ export class Filter {
     return result;
   }
 
+  /**
+   * Filters an array of samples.
+   *
+   * @param {number[]} samps Array of samples
+   * @returns {number[]} Array of filtered samples
+   * @memberof Filter
+   */
+  public do_sample_all(samps: number[]): number[] {
+    return samps.slice().map((x) => this.do_sample(x));
+  }
+
+  /**
+   * Returns the filter taps
+   *
+   * @readonly
+   * @type {number[]} Array of filter taps
+   * @memberof Filter
+   */
   public get taps(): number[] {
     return this._m_taps;
   }
