@@ -22,7 +22,7 @@ export class WaveSignal extends Signal {
   constructor(type: WaveSignalType, Fs: number, Fa: number, phi?: number) {
     if (Fa >= Fs / 2) {
       throw new Error(
-        'Signal frequency must be less than half the sampling frequency (Fa < Fs / 2)'
+        'Signal frequency must be less than half the sampling frequency (Fa < Fs / 2)',
       );
     }
 
@@ -35,8 +35,8 @@ export class WaveSignal extends Signal {
       type === WaveSignalType.SINE
         ? this._generateSine()
         : type === WaveSignalType.SQUARE
-          ? this._generateSquare()
-          : this._generateTriangular();
+        ? this._generateSquare()
+        : this._generateTriangular();
   }
 
   /**
@@ -48,7 +48,7 @@ export class WaveSignal extends Signal {
    */
   private _generateSine(): number[] {
     return Array.apply(null, Array(this.Fs)).map((x: any, i: any) =>
-      Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi)
+      Math.sin((2 * Math.PI * this._Fa * i) / this.Fs + this._phi),
     );
   }
 

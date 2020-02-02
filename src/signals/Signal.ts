@@ -1,5 +1,5 @@
 import * as math from 'mathjs';
-import { Functions } from '../';
+import { Functions } from '..';
 
 /**
  *
@@ -92,13 +92,13 @@ export class Signal {
   public sample(Fs: number): number[] {
     if (Fs < this.Fs && this.Fs % Fs !== 0) {
       throw new Error(
-        'The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.'
+        'The new sampling frequency must be a factor of the current sampling frequency if it is lower than the current sampling frequency.',
       );
     }
 
     if (Fs > this.Fs && Fs % this.Fs !== 0) {
       throw new Error(
-        'The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.'
+        'The new sampling frequency must be a multiple of the current sampling frequency if it is higher than the current sampling frequency.',
       );
     }
 
