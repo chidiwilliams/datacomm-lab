@@ -1,5 +1,5 @@
 import * as math from 'mathjs';
-import { Functions } from '..';
+import { Functions } from '../functions/Functions';
 
 /**
  *

@@ -48,7 +48,7 @@ export class Functions {
 
       y[i] = math.complex(math.add(p[i], math.multiply(wk, q[i])).toString());
       y[i + x.length / 2] = math.complex(
-        math.subtract(p[i], math.multiply(wk, q[i])).toString()
+        math.subtract(p[i], math.multiply(wk, q[i])).toString(),
       );
     }
 
@@ -94,7 +94,7 @@ export class Functions {
    */
   public static cconvolve(
     x: math.Complex[],
-    y: math.Complex[]
+    y: math.Complex[],
   ): math.Complex[] {
     if (x.length !== y.length) {
       throw new Error('Arrays must have equal lengths.');

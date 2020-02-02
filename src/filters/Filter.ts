@@ -11,7 +11,7 @@ export class Filter {
   private _m_Fu: number = 0;
   private _m_phi: number = 0;
 
-  private static MAX_NUM_FILTER_TAPS = 1000;
+  public static MAX_NUM_FILTER_TAPS = 1000;
 
   /**
    *Creates an instance of Filter.
@@ -25,7 +25,7 @@ export class Filter {
     filt_t: FilterType,
     num_taps: number,
     Fs: number,
-    Fx: number | FilterFreq
+    Fx: number | FilterFreq,
   ) {
     this._m_filt_t = filt_t;
     this._m_Fs = Fs;
@@ -40,14 +40,14 @@ export class Filter {
 
     if (num_taps <= 0 || num_taps > Filter.MAX_NUM_FILTER_TAPS) {
       throw new Error(
-        'num_taps must be greater than zero and less than Filter.MAX_NUM_FILTER_TAPS.'
+        'num_taps must be greater than zero and less than Filter.MAX_NUM_FILTER_TAPS.',
       );
     }
 
     if (filt_t === FilterType.LPF || filt_t === FilterType.HPF) {
       if (typeof Fx !== 'number') {
         throw new Error(
-          'Fx must be a number for FilterType.LPF and FilterType.HPF.'
+          'Fx must be a number for FilterType.LPF and FilterType.HPF.',
         );
       }
 
@@ -64,7 +64,7 @@ export class Filter {
         typeof Fx.Fu === 'undefined'
       ) {
         throw new Error(
-          'Fx must be an object ({ Fl: number, Fu: number }) for FilterType.BPF.'
+          'Fx must be an object ({ Fl: number, Fu: number }) for FilterType.BPF.',
         );
       }
 
@@ -74,13 +74,13 @@ export class Filter {
 
       if (Fx.Fl <= 0 || Fx.Fl >= Fs / 2) {
         throw new Error(
-          'Fx.Fl must be greater than zero and less than Fs / 2.'
+          'Fx.Fl must be greater than zero and less than Fs / 2.',
         );
       }
 
       if (Fx.Fu <= 0 || Fx.Fu >= Fs / 2) {
         throw new Error(
-          'Fx.Fu must be greater than zero and less than Fs / 2.'
+          'Fx.Fu must be greater than zero and less than Fs / 2.',
         );
       }
 
@@ -212,6 +212,6 @@ export enum FilterType {
 }
 
 interface FilterFreq {
-  Fl: number;
-  Fu: number;
+  Fl?: number;
+  Fu?: number;
 }
