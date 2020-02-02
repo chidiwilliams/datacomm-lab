@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run rebuild && npm run test-coverage",
-    "rebuild": "rm './dist/' -rf && tsc",
+    "rebuild": "rm -rf './dist/' -rf && tsc",
     "test": "mocha --reporter spec",
     "test-coverage": "nyc --check-coverage --lines 95 npm test"
   },
