@@ -9,7 +9,8 @@
     "prepublishOnly": "npm run rebuild && npm run test-coverage",
     "rebuild": "rm -rf './dist/' -rf && tsc",
     "test": "mocha --reporter spec -r ts-node/register -r source-map-support/register --recursive src/**/*.test.ts",
-    "test-coverage": "nyc --check-coverage --lines 100 npm run test"
+    "test-coverage": "nyc --check-coverage --lines 100 npm run test",
+    "docs": "typedoc --plugin typedoc-plugin-markdown --exclude \"**/*+(index|.test).ts\" --excludeNotExported --excludePrivate --excludeProtected --readme none --name \"datacomm-lab\" --includeVersion --out docs/ src"
   },
   "pre-commit": [
     "rebuild",
@@ -40,6 +41,8 @@
     "pre-commit": "^1.2.2",
     "source-map-support": "^0.5.16",
     "ts-node": "^8.6.2",
+    "typedoc": "^0.16.9",
+    "typedoc-plugin-markdown": "^2.2.16",
     "typescript": "^3.7.5"
   },
   "dependencies": {
