@@ -4,7 +4,7 @@ import * as math from 'mathjs';
  *
  *
  * @export
- * @class FFT
+ * @class Functions
  */
 export class Functions {
   /**
@@ -13,7 +13,7 @@ export class Functions {
    *
    * @param {math.Complex[]} x Signal in time-domain
    * @returns {math.Complex[]} Signal in frequency-domain
-   * @memberof FFT
+   * @memberof Functions
    */
   public static fft(x: math.Complex[]): math.Complex[] {
     // Base case
@@ -60,7 +60,7 @@ export class Functions {
    *
    * @param {math.Complex[]} x Signal in frequency-domain
    * @returns {math.Complex[]} Signal in time-domain
-   * @memberof FFT
+   * @memberof Functions
    */
   public static ifft(x: math.Complex[]): math.Complex[] {
     if (!Functions.isRadix2(x.length)) {
@@ -90,7 +90,7 @@ export class Functions {
    * @param {math.Complex[]} x Signal 1
    * @param {math.Complex[]} y Signal 2
    * @returns {math.Complex[]} Circular convolution result
-   * @memberof FFT
+   * @memberof Functions
    */
   public static cconvolve(
     x: math.Complex[],
@@ -124,7 +124,7 @@ export class Functions {
    * @param {math.Complex[]} x Signal 1
    * @param {math.Complex[]} y Signal 2
    * @returns {math.Complex[]} Convolution result
-   * @memberof FFT
+   * @memberof Functions
    */
   public static convolve(x: math.Complex[], y: math.Complex[]): math.Complex[] {
     if (x.length !== y.length) {
